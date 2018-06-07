@@ -4,6 +4,24 @@
 
 This will be a POC Shopify PWA using the Storefront API & GatsbyJS.
 
+## High Level Project Goals
+
+### Speed
+
+Should be as fast but ideally, faster than a normal Shopify experience - especially for slower connection due to service worker.
+
+### Highly Customizable Theme and Settings
+
+There should be a number of ways to customize the theme without touching the code such as colors, typography, and settings (show breadcrumbs?, etc.)
+
+### Accessible
+
+Out-of-box, the site should be WCAG 2.0 accessible. This means aria tags where needed, AA color contrast, and keyboard accessible navigation with focus styling. This includes things like the gallery.
+
+### Code Complete with regular Shopify themes
+
+Should strive to offer the same features as a normal Shopify theme such as easy homepage section content, all the normal content types. See [this list of issues](https://github.com/gil--/gatsby-starter-shopifypwa/issues/4) which might prevent code complete.
+
 ## Install
 
 ### ENV
