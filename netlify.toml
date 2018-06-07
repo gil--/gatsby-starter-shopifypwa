@@ -1,0 +1,8 @@
+[build]
+    publish = "public"
+    command = "npm run build"
+[template]
+    incoming-hooks = ["Shopify Product Create", "Shopify Product Update", "Shopify Product Delete"]
+[template.environment]
+    SHOPIFY_SHOP_NAME = "SHOPIFY_SHOP_NAME"
+    SHOPIFY_ACCESS_TOKEN = "SHOPIFY_ACCESS_TOKEN"
