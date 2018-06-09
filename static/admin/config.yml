@@ -1,6 +1,6 @@
 backend:
   name: git-gateway
-  branch: master
+  branch: editorial_workflow
 
 media_folder: static/img
 public_folder: /img
@@ -14,7 +14,7 @@ collections: # A list of collections the CMS should be able to edit
     files:
       - name: "general"
         label: "Site Settings"
-        file: "_data/settings.json"
+        file: "data/settings.json"
         description: "General Site Settings"
         fields:
           - {label: "Global title", name: "site_title", widget: "string"}

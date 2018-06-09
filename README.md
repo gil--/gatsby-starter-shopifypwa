@@ -43,3 +43,8 @@ Setup webhooks with Netlify to auto-deploy after product creation, update, and d
 ## Deploy
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gil--/gatsby-starter-shopifypwa)
+
+### Instructions
+
+1. Have your Shopify store name (If it's https://shopifypwa.myshopify.com, the store name would be shopifypwa) and [access token ready](https://www.shopify.com/partners/blog/17056443-how-to-generate-a-shopify-api-token). Enter those as the environment variables after clicking the deploy button above.
+2. Enable Netlify Identity in order to enable the Admin CMS. Go to `https://app.netlify.com/sites/YOURAPPNAME/identity` and click **Enable Identity**.
