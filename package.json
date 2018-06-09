@@ -6,8 +6,10 @@
   "dependencies": {
     "gatsby": "^1.9.270",
     "gatsby-link": "^1.6.40",
+    "gatsby-plugin-netlify-cms": "^2.0.1",
     "gatsby-plugin-react-helmet": "^2.0.10",
     "gatsby-source-shopify": "^1.0.1",
+    "netlify-cms": "^1.8.4",
     "react-helmet": "^5.2.0"
   },
   "keywords": [

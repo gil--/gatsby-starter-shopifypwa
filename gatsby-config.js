@@ -7,11 +7,8 @@ module.exports = {
     title: 'Shopify PWA',
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
-    /*
-    * Gatsby's data processing layer begins with “source”
-    * plugins. Here the site sources its data from Shopify.
-    */
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-netlify-cms`,
     {
       resolve: 'gatsby-source-shopify',
       options: {
