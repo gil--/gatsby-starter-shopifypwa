@@ -14,7 +14,7 @@ collections: # A list of collections the CMS should be able to edit
     files:
       - name: "global-settings"
         label: "Global Settings"
-        file: "data/settings/global.yml"
+        file: "data/settings/global.json"
         description: "Global Site Settings"
         fields:
           - {label: "Global title", name: siteTitle, widget: string}
@@ -22,7 +22,7 @@ collections: # A list of collections the CMS should be able to edit
           - {label: "Favicon", name: favicon, widget: image}
       - name: "theme-settings"
         label: "Theme Settings"
-        file: "data/settings/theme.yml"
+        file: "data/settings/theme.json"
         description: "Theme Settings"
         fields:
           - label: "Colors - General"
@@ -44,7 +44,7 @@ collections: # A list of collections the CMS should be able to edit
               - {label: "Base Font Size", name: fontSize, widget: string}
       - name: "product-settings"
         label: "Product Settings"
-        file: "data/settings/product.yml"
+        file: "data/settings/product.json"
         description: "Global Product Settings"
         fields:
           - {label: "Show Related Products?", name: relatedProducts, widget: "boolean", default: true}
