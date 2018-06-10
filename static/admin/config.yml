@@ -1,6 +1,6 @@
 backend:
   name: git-gateway
-  branch: editorial_workflow
+  branch: master
 
 media_folder: static/img
 public_folder: /img
@@ -12,16 +12,23 @@ collections: # A list of collections the CMS should be able to edit
     editor:
       preview: false
     files:
-      - name: "general"
-        label: "Site Settings"
-        file: "data/settings.json"
-        description: "General Site Settings"
+      - name: "global-settings"
+        label: "Global Settings"
+        file: "data/settings/global.yml"
+        description: "Global Site Settings"
         fields:
-          - {label: "Global title", name: "site_title", widget: "string"}
-          - label: "Post Settings"
-            name: posts
-            widget: "object"
+          - {label: "Global title", name: siteTitle, widget: string}
+          - {label: "Site Url", name: siteUrl, widget: url}
+          - label: "Colors"
+            name: colors
+            widget: object
             fields:
-              - {label: "Number of posts on frontpage", name: front_limit, widget: number}
-              - {label: "Default Author", name: author, widget: string}
-              - {label: "Default Thumbnail", name: thumb, widget: image, class: "thumb"}
+              - {label: "Primary Color", name: colorPrimary, widget: color}
+      - name: "product-settings"
+        label: "Product Settings"
+        file: "data/settings/product.yml"
+        description: "Global Product Settings"
+        fields:
+          - {label: "Show Related Products?", name: relatedProducts, widget: "boolean", default: true}
+          - {label: "Show Breadcrumbs on Product Page?", name: breadcrumbs, widget: "boolean", default: true}
+          - {label: "Primary Color", name: colorPrimary, widget: string}
