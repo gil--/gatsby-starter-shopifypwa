@@ -18,12 +18,30 @@ collections: # A list of collections the CMS should be able to edit
         description: "Global Site Settings"
         fields:
           - {label: "Global title", name: siteTitle, widget: string}
-          - {label: "Site Url", name: siteUrl, widget: url}
-          - label: "Colors"
+          - {label: "Site Url", name: siteUrl, widget: string}
+          - {label: "Favicon", name: favicon, widget: image}
+      - name: "theme-settings"
+        label: "Theme Settings"
+        file: "data/settings/theme.yml"
+        description: "Theme Settings"
+        fields:
+          - label: "Colors - General"
             name: colors
             widget: object
             fields:
               - {label: "Primary Color", name: colorPrimary, widget: color}
+          - label: "Typography - Headings"
+            name: headingTypography
+            widget: object
+            fields:
+              - {label: "Font Family", name: fontFamily, widget: string}
+              - {label: "Display headings in uppercase", name: uppercase, widget: boolean}
+          - label: "Typography - Body Text"
+            name: bodyTypography
+            widget: object
+            fields:
+              - {label: "Font Family", name: fontFamily, widget: string}
+              - {label: "Base Font Size", name: fontSize, widget: string}
       - name: "product-settings"
         label: "Product Settings"
         file: "data/settings/product.yml"
