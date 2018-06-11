@@ -12,7 +12,8 @@
     "gatsby-source-shopify": "^1.0.1",
     "netlify-cms": "^1.8.4",
     "netlify-cms-widget-color": "^2.2.0",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "shopify-buy": "^1.4.0"
   },
   "keywords": [
     "gatsby"

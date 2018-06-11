@@ -1,20 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
+import Client from 'shopify-buy'
 
 import Header from '../components/header'
 import './index.css'
 
-const Layout = ({ children, data }) => (
+const shopifyClient = Client.buildClient({
+  domain: `${process.env.GATSBY_SHOPIFY_SHOP_NAME}.myshopify.com`,
+  storefrontAccessToken: process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
+})
+
+const Layout = ({ children, data, ...props }) => (
   <div>
     <Helmet
-      title={data.site.siteMetadata.title}
+      title="Shopify PWA"
       meta={[
         { name: 'description', content: 'Sample' },
         { name: 'keywords', content: 'sample, something' },
       ]}
     />
-    <Header siteTitle={data.site.siteMetadata.title} />
+    <Header siteTitle="Shopify PWA" />
     <div
       style={{
         margin: '0 auto',
@@ -23,7 +29,7 @@ const Layout = ({ children, data }) => (
         paddingTop: 0,
       }}
     >
-      {children()}
+      {React.cloneElement(children({ ...props, shopifyClient }))}
     </div>
   </div>
 )
