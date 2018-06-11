@@ -4,5 +4,5 @@
 [template]
     incoming-hooks = ["Shopify Product Create", "Shopify Product Update", "Shopify Product Delete"]
 [template.environment]
-    SHOPIFY_SHOP_NAME = "SHOPIFY_SHOP_NAME"
-    SHOPIFY_ACCESS_TOKEN = "SHOPIFY_ACCESS_TOKEN"
+    GATSBY_SHOPIFY_SHOP_NAME = "SHOPIFY_SHOP_NAME"
+    GATSBY_SHOPIFY_ACCESS_TOKEN = "SHOPIFY_ACCESS_TOKEN"
