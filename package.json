@@ -1,8 +1,8 @@
 {
-  "name": "gatsby-starter-default",
-  "description": "Gatsby default starter",
-  "version": "1.0.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "name": "gatsby-starter-shopifypwa",
+  "description": "Shopify PWA starter",
+  "version": "0.0.1",
+  "author": "Gil Greenberg <gilgreenberg@gmail.com>",
   "dependencies": {
     "gatsby": "^2.0.0",
     "gatsby-plugin-manifest": "^2.0.2",
@@ -13,7 +13,10 @@
     "react-helmet": "^5.2.0"
   },
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "shopify",
+    "pwa",
+    "ecommerce"
   ],
   "license": "MIT",
   "scripts": {
@@ -27,6 +30,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/gil--/gatsby-starter-shopifypwa"
   }
 }
