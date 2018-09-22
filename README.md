@@ -48,3 +48,26 @@ Setup webhooks with Netlify to auto-deploy after product creation, update, and d
 
 1. Have your Shopify store name (If it's https://shopifypwa.myshopify.com, the store name would be shopifypwa) and [access token ready](https://www.shopify.com/partners/blog/17056443-how-to-generate-a-shopify-api-token). Enter those as the environment variables after clicking the deploy button above.
 2. Enable Netlify Identity in order to enable the Admin CMS. Go to `https://app.netlify.com/sites/YOURAPPNAME/identity` and click **Enable Identity**.
+
+## Features (WIP)
+
+The following are planned features. Many of these are not planned for the initial release.
+
+- [ ] Native-Like Homepage Sections
+- [ ] Page Builder (Easily Build CMS Pages & Category Landing Pages)
+- [ ] Theme Customizer (Colors, Typography, Basic Theme Features On/Off)
+- [ ] Excellent SEO
+- [ ] Rich-Media Cards (Twitter, Facebook)
+- [ ] OOB Analytics Support (GA Ecommerce, GTM)
+- [ ] WCAG AA Accessible
+- [ ] PWA Functionality (Offline, Notifications, Manifest)
+- [ ] Advanced Search (3rd Party Integration)
+- [ ] WebPayments API Support? Shopify Dynamic Checkout?
+- [ ] AR Product Support
+- [ ] Advance Related Products
+- [ ] 3rd Party Reviews Support
+- [ ] 3rd Party Chat Support
+- [ ] Mega Menu
+- [ ] Login/Registration (My Orders)
+- [ ] Order Status Lookup
+- [ ] FAQ Page Template (w/ Typeahead search)
