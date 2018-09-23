@@ -7,7 +7,8 @@ module.exports = {
     title: 'Shopify PWA',
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
+    `gatsby-plugin-layout`,
+    `gatsby-plugin-react-helmet`,
     {
       resolve: 'gatsby-plugin-apollo-shopify',
       options: {
@@ -16,10 +17,10 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-source-graphql",
+      resolve: `gatsby-source-graphql`,
       options: {
-        typeName: "Shopify",
-        fieldName: "shopify",
+        typeName: 'Shopify',
+        fieldName: 'shopify',
         url: `https://${process.env.GATSBY_SHOPIFY_SHOP_NAME}.myshopify.com/api/graphql`,
         headers: {
           'X-Shopify-Storefront-Access-Token': process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
@@ -38,6 +39,6 @@ module.exports = {
         icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
-    'gatsby-plugin-offline',
+    `gatsby-plugin-offline`,
   ],
 }
