@@ -10,13 +10,14 @@ exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions
 
     let allProducts = []
+    const productLimitPerQuery = 250;
 
     const getMoreProducts = async function (currentCursor) {
         const productsCache = await graphql(`
-            query getAllProducts($previousProduct: String!) {
+            query getAllProducts($previousProduct: String!, $limit: Int!) {
                 shopify {
                     shop {
-                        products(first: 20, after: $previousProduct) {
+                        products(first: $limit, after: $previousProduct) {
                             edges {
                                 cursor
                                 node {
@@ -33,6 +34,7 @@ exports.createPages = async ({ graphql, actions }) => {
             `,
             {
                 "previousProduct": currentCursor,
+                "limit": productLimitPerQuery,
             }
         )
 
@@ -45,24 +47,28 @@ exports.createPages = async ({ graphql, actions }) => {
     }
 
     const productsCache = await graphql(`
-    {
-        shopify {
-            shop {
-                products(first: 20) {
-                    edges {
-                        cursor
-                        node {
-                            handle
+        query getAllProducts($limit: Int!) {
+            shopify {
+                shop {
+                    products(first: $limit) {
+                        edges {
+                            cursor
+                            node {
+                                handle
+                            }
                         }
-                    }
-                    pageInfo {
-                        hasNextPage
+                        pageInfo {
+                            hasNextPage
+                        }
                     }
                 }
             }
         }
-    }
-    `)
+        `,
+        {
+            "limit": productLimitPerQuery,
+        }
+    )
 
     // add returned paginated products to all products
     allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
