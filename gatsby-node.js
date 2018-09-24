@@ -9,15 +9,54 @@ const path = require('path')
 exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions
 
-    const allProducts = await graphql(`
+    let allProducts = []
+
+    const getMoreProducts = function (currentCursor) {
+        const productsCache = await graphql(`
+            query getAllProducts($previousProduct: String!) {
+                shopify {
+                    shop {
+                        products(first: 20, after: $previousProduct) {
+                            edges {
+                                cursor
+                                node {
+                                    handle
+                                }
+                            }
+                            pageInfo {
+                                hasNextPage
+                            }
+                        }
+                    }
+                }
+            }
+            `,
+            {
+                "previousProduct": currentCursor,
+            }
+        )
+
+        // add returned paginated products to all products
+        allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
+
+        if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
+            getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+        }
+    }
+
+    const productsCache = await graphql(`
     {
         shopify {
             shop {
-                products(first: 250) {
+                products(first: 20) {
                     edges {
+                        cursor
                         node {
                             handle
                         }
+                    }
+                    pageInfo {
+                        hasNextPage
                     }
                 }
             }
@@ -25,12 +64,20 @@ exports.createPages = async ({ graphql, actions }) => {
     }
     `)
 
-    allProducts.data.shopify.shop.products.edges.forEach(edge => {
+    // add returned paginated products to all products
+    allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
+
+    // if there's more products, grab next 250 products
+    if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
+        //getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+    }
+
+    allProducts.forEach(product => {
         createPage({
-            path: `/products/${edge.node.handle}`,
+            path: `/products/${product.node.handle}`,
             component: path.resolve('./src/templates/product.js'),
             context: {
-                handle: edge.node.handle,
+                handle: product.node.handle,
             },
         })
     })
