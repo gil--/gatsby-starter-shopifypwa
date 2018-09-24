@@ -3,7 +3,6 @@ import { graphql, Link } from 'gatsby'
 
 class Products extends React.Component {
     render() {
-        //const products = get(this, 'props.data.allContentfulPost.edges').map(post => post.node)
         const products = this.props.data.shopify.shop.products
 
         return (
