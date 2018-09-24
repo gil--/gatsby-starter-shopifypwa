@@ -11,7 +11,9 @@
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-source-graphql": "^2.0.2",
+    "graphql-tag": "^2.9.2",
     "react": "^16.5.1",
+    "react-apollo": "^2.1.11",
     "react-dom": "^16.5.1",
     "react-helmet": "^5.2.0"
   },
