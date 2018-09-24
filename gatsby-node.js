@@ -11,7 +11,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     let allProducts = []
 
-    const getMoreProducts = function (currentCursor) {
+    const getMoreProducts = async function (currentCursor) {
         const productsCache = await graphql(`
             query getAllProducts($previousProduct: String!) {
                 shopify {
@@ -40,7 +40,7 @@ exports.createPages = async ({ graphql, actions }) => {
         allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
 
         if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
-            getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+            await getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
         }
     }
 
@@ -69,7 +69,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     // if there's more products, grab next 250 products
     if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
-        //getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+        await getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
     }
 
     allProducts.forEach(product => {
