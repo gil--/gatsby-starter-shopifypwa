@@ -32,6 +32,10 @@ query productsQuery {
                         handle
                     }
                 }
+                pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                }
             }
         }
     }
