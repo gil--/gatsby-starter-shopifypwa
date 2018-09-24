@@ -9,28 +9,81 @@ const path = require('path')
 exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions
 
-    const allProducts = await graphql(`
-    {
-        shopify {
-            shop {
-                products(first: 250) {
-                    edges {
-                        node {
-                            handle
+    let allProducts = []
+    const productLimitPerQuery = 250;
+
+    const getMoreProducts = async function (currentCursor) {
+        const productsCache = await graphql(`
+            query getAllProducts($previousProduct: String!, $limit: Int!) {
+                shopify {
+                    shop {
+                        products(first: $limit, after: $previousProduct) {
+                            edges {
+                                cursor
+                                node {
+                                    handle
+                                }
+                            }
+                            pageInfo {
+                                hasNextPage
+                            }
+                        }
+                    }
+                }
+            }
+            `,
+            {
+                "previousProduct": currentCursor,
+                "limit": productLimitPerQuery,
+            }
+        )
+
+        // add returned paginated products to all products
+        allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
+
+        if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
+            await getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+        }
+    }
+
+    const productsCache = await graphql(`
+        query getAllProducts($limit: Int!) {
+            shopify {
+                shop {
+                    products(first: $limit) {
+                        edges {
+                            cursor
+                            node {
+                                handle
+                            }
+                        }
+                        pageInfo {
+                            hasNextPage
                         }
                     }
                 }
             }
         }
-    }
-    `)
+        `,
+        {
+            "limit": productLimitPerQuery,
+        }
+    )
 
-    allProducts.data.shopify.shop.products.edges.forEach(edge => {
+    // add returned paginated products to all products
+    allProducts = allProducts.concat(productsCache.data.shopify.shop.products.edges)
+
+    // if there's more products, grab next 250 products
+    if (productsCache.data.shopify.shop.products.pageInfo.hasNextPage) {
+        await getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
+    }
+
+    allProducts.forEach(product => {
         createPage({
-            path: `/products/${edge.node.handle}`,
+            path: `/products/${product.node.handle}`,
             component: path.resolve('./src/templates/product.js'),
             context: {
-                handle: edge.node.handle,
+                handle: product.node.handle,
             },
         })
     })
