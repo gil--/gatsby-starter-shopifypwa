@@ -39,15 +39,15 @@ class Product extends React.Component {
         selectedOptions[target.name] = target.value;
 
         const selectedVariant = variants.findIndex(variant => {
-            let foundVariant = false;
+            let hasFoundVariant = false;
 
             variant.node.selectedOptions.forEach(selectedOption => {
                 if (selectedOptions[selectedOption.name] === selectedOption.value.valueOf()) {
-                    foundVariant = true;
+                    hasFoundVariant = true;
                 }
             });
 
-            return foundVariant;
+            return hasFoundVariant;
         });
 
         if (selectedVariant < 0) {
