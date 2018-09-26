@@ -1,6 +1,5 @@
 import React from "react";
 import { StaticQuery, graphql, Link } from "gatsby"
-import Img from "gatsby-image"
 import gql from "graphql-tag"
 import { Query } from "react-apollo"
 import VariantSelector from "../components/VariantSelector"
