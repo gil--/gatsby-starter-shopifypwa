@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql, Link } from 'gatsby'
-
+import ProductList from '../components/ProductList'
 class Products extends React.Component {
     render() {
         const products = this.props.data.shopify.shop.products
@@ -8,12 +8,11 @@ class Products extends React.Component {
         return (
             <div>
                 <h1>All Products</h1>
-                <ul>
-                    {products.edges.map((productEdge, i) => {
-                        const product = productEdge.node
-                        return <li key={i}><Link to={`/products/${product.handle}`}>{product.title}</Link></li>
-                    })}
-                </ul>
+                <ProductList products={products}
+                    style={{
+                        display: 'grid',
+                    }}
+                />
             </div>
         )
     }
@@ -28,8 +27,23 @@ query productsQuery {
             products(first: 20) {
                 edges {
                     node {
-                        title
+                        id
                         handle
+                        title
+                        priceRange {
+                            minVariantPrice {
+                                currencyCode
+                                amount
+                            }
+                        }
+                        images(first: 2) {
+                            edges {
+                                node {
+                                    originalSrc
+                                    altText
+                                }
+                            }
+                        }
                     }
                 }
                 pageInfo {
