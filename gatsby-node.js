@@ -9,6 +9,9 @@ const path = require('path')
 exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions
 
+    /**********************
+        PRODUCTS
+    ***********************/
     let allProducts = []
     const productLimitPerQuery = 250;
 
@@ -78,7 +81,7 @@ exports.createPages = async ({ graphql, actions }) => {
         await getMoreProducts(currentCursor = productsCache.data.shopify.shop.products.edges[productsCache.data.shopify.shop.products.edges.length - 1].cursor)
     }
 
-    allProducts.forEach(product => {
+    allProducts && allProducts.forEach(product => {
         createPage({
             path: `/products/${product.node.handle}`,
             component: path.resolve('./src/templates/product.js'),
@@ -88,26 +91,32 @@ exports.createPages = async ({ graphql, actions }) => {
         })
     })
 
-//     const collections = await graphql(`
-//     {
-//       allShopifyCollection {
-//         edges {
-//           node {
-//             id
-//             handle
-//           }
-//         }
-//       }
-//     }
-//   `)
+    /**********************
+        COLLECTIONS
+    ***********************/
+    const allCollections = await graphql(`
+    {
+        shopify {
+            shop {
+                collections(first: 250) {
+                    edges {
+                        node {
+                            handle
+                        }
+                    }
+                }
+            }
+        }
+    }
+  `)
 
-//     collections.data.allShopifyCollection.edges.forEach(edge => {
-//         createPage({
-//             path: `/collections/${edge.node.handle}`,
-//             component: path.resolve('./src/templates/collection.js'),
-//             context: {
-//                 id: edge.node.id,
-//             },
-//         })
-//     })
+    allCollections && allCollections.data.shopify.shop.collections.edges.forEach(edge => {
+        createPage({
+            path: `/collections/${edge.node.handle}`,
+            component: path.resolve('./src/templates/collection.js'),
+            context: {
+                handle: edge.node.handle,
+            },
+        })
+    })
 }
