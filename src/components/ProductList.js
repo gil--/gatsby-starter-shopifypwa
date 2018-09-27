@@ -9,7 +9,13 @@ class ProductList extends React.Component {
 
         return (
             <>
-                <ul>
+                <ul style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr',
+                        gridGap: '10px',
+                        listStyle: 'none',
+                    }}
+                >
                     {productList}
                 </ul>
             </>
