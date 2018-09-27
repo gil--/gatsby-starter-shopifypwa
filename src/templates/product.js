@@ -102,7 +102,7 @@ class Product extends React.Component {
                             //         fixed={image.childImageSharp.fixed}
                             //     />
                             // )
-                            return <img key={i} src={image.node.originalSrc} alt="" />
+                            return <img key={i} src={image.node.originalSrc} alt={image.node.altText} />
                         })}
                     </div>
                     <div
@@ -163,6 +163,7 @@ query($handle: String!) {
                     edges {
                         node {
                             originalSrc
+                            altText
                         }
                     }
                 }
@@ -175,6 +176,7 @@ query($handle: String!) {
                             availableForSale
                             image {
                                 originalSrc
+                                altText
                             }
                             selectedOptions {
                                 name
