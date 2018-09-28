@@ -1,8 +1,9 @@
 import React from "react";
-import { StaticQuery, graphql, Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import gql from "graphql-tag"
 import { Query } from "react-apollo"
 import VariantSelector from "../components/VariantSelector"
+import AddToCart from "../components/AddToCart"
 
 const GET_PRODUCT = gql`
 query($handle: String!) {
@@ -21,7 +22,7 @@ query($handle: String!) {
 `
 
 class Product extends React.Component {
-    state = { };
+    state = { }
 
     componentWillMount() {
         this.props.data.shopify.shop.productByHandle.options.forEach((selector) => {
@@ -72,6 +73,8 @@ class Product extends React.Component {
         let variantImage = this.state.selectedVariantImage || product.images.edges[0].node.src
         let variantQuantity = this.state.selectedVariantQuantity || 1
 
+        const price = new Intl.NumberFormat('en', { style: 'currency', currency: product.priceRange.minVariantPrice.currencyCode }).format(variant.price)
+
         let variantSelectors = product.options.map((option) => {
             return (
                 <VariantSelector
@@ -112,7 +115,7 @@ class Product extends React.Component {
                         }}
                     >
                         <h1>{product.title}</h1>
-                        <div>${variant.price}</div>
+                        <div>{price}</div>
                         <p>{product.description}</p>
                         <Query
                         query={GET_PRODUCT}
@@ -136,7 +139,7 @@ class Product extends React.Component {
                                 <input min="1" type="number" defaultValue={variantQuantity} onChange={this.handleQuantityChange}></input>
                             </label>
                         </div>
-                        <button type="button">Buy Now</button>
+                        <AddToCart variantId={variant.id} quantity={variantQuantity} />
                     </div>
                 </div>
             </>
@@ -154,6 +157,12 @@ query($handle: String!) {
                 title
                 description
                 handle
+                priceRange {
+                    minVariantPrice {
+                        currencyCode
+                        amount
+                    }
+                }
                 options {
                     id
                     name
@@ -170,6 +179,7 @@ query($handle: String!) {
                 variants(first: 100) {
                     edges {
                         node {
+                            id
                             price
                             compareAtPrice
                             sku
