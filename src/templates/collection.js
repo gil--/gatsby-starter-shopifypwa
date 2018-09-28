@@ -6,11 +6,12 @@ class Collection extends React.Component {
     state = { }
 
     render() {
-        const { title, description, products } = this.props.data.shopify.shop.collectionByHandle
+        const { title, description, image, products } = this.props.data.shopify.shop.collectionByHandle
 
         return (
             <>
                 <h1>{title}</h1>
+                {image && <img src={image.originalSrc} alt={image.altText} />}
                 <div>{description}</div>
                 <ProductList products={products} />
             </>
