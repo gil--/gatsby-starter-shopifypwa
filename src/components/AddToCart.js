@@ -38,23 +38,28 @@ class AddToCart extends React.Component {
                         }
                     }
                 }>
-                    {(addToCart) => (
-                        <button
-                            type="button"
-                            onClick={e => {
-                                e.preventDefault()
-                                addToCart({
-                                    variables: {
-                                        input: {
-                                            lineItems: [
-                                                { quantity: parseInt(this.props.quantity), variantId: this.props.variantId },
-                                            ]
+                    {(addToCart, {loading}) => {
+                        if (loading) return <button type="button" disabled="disabled">Adding to Cart</button>
+
+                        return (
+                            <button
+                                type="button"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    addToCart({
+                                        variables: {
+                                            input: {
+                                                lineItems: [
+                                                    { quantity: parseInt(this.props.quantity), variantId: this.props.variantId },
+                                                ]
+                                            }
                                         }
-                                    }
-                                })
-                            }}
-                        >Buy Now</button>
-                )}
+                                    })
+                                }}
+                            >Buy Now</button>
+                        )
+                    }
+                }
                 </Mutation>
             </>
         )
