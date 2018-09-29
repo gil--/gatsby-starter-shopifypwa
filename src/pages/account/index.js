@@ -1,5 +1,5 @@
 import React from 'react'
-import AccountLayout from '../../components/layouts/account'
+import AccountLayout from '../../components/account/layout'
 
 class Account extends React.Component {
     render() {
