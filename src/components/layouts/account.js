@@ -8,7 +8,7 @@ class AccountLayout extends React.Component {
             <ContextConsumer>
                 {({ data }) => {
                     return (!data.customerAccessToken) ?
-                        navigate('/account/login')
+                        (typeof window !== `undefined`)? navigate('/account/login') : ''
                     :
                     <>
                         {this.props.children}
