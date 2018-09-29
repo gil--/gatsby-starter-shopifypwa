@@ -76,8 +76,10 @@ class Login extends React.Component {
                                 })
 
                                 set({
-                                    customerAccessToken: data.customerAccessTokenCreate.customerAccessToken
+                                    customerAccessToken: data.customerAccessTokenCreate.customerAccessToken,
                                 })
+
+                                // TODO: also set inside localstorage
 
                                 console.log(data)
                                 navigate('/account')
