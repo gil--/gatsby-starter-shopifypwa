@@ -24,7 +24,7 @@ query($handle: String!) {
 class Product extends React.Component {
     state = { }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.data.shopify.shop.productByHandle.options.forEach((selector) => {
             this.setState({
                 selectedOptions: { [selector.name]: selector.values[0] }
