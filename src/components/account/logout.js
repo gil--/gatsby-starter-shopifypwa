@@ -17,51 +17,47 @@ mutation customerAccessTokenDelete($customerAccessToken: String!) {
 }
 `
 
-class Logout extends React.Component {
-    render() {
-        return (
-            <ContextConsumer>
-                {({ data, set }) => {
-                    return (
-                    <Mutation
-                        mutation={CUSTOMER_LOGOUT}
-                        onError={this.error}
-                        onCompleted={data => {
-                            if (data.customerAccessTokenDelete.userErrors.length) return
+const Logout = () => (
+    <ContextConsumer>
+        {({ data, set }) => {
+            return (
+            <Mutation
+                mutation={CUSTOMER_LOGOUT}
+                onError={this.error}
+                onCompleted={data => {
+                    if (data.customerAccessTokenDelete.userErrors.length) return
 
-                            set({
-                                customerAccessToken: '',
-                                cart: '',
+                    set({
+                        customerAccessToken: '',
+                        cart: '',
+                    })
+
+                    // TODO: also clear localstorage (including cart, etc.)
+
+                    navigate('/account/login')
+                }}
+            >
+                {(customerLogout, { loading }) => {
+                    return <Link
+                        to="/account/login"
+                        onClick={e => {
+                            e.preventDefault()
+
+                            // delete the Shopify customer token
+                            customerLogout({
+                                variables: {
+                                    "customerAccessToken": data.customerAccessToken.accessToken,
+                                }
                             })
-
-                            // TODO: also clear localstorage (including cart, etc.)
-
-                            navigate('/account/login')
                         }}
                     >
-                        {(customerLogout, { loading }) => {
-                            return <Link
-                                to="/account/login"
-                                onClick={e => {
-                                    e.preventDefault()
-
-                                    // delete the Shopify customer token
-                                    customerLogout({
-                                        variables: {
-                                            "customerAccessToken": data.customerAccessToken.accessToken,
-                                        }
-                                    })
-                                }}
-                            >
-                                Log Out
-                            </Link>
-                        }}
-                    </Mutation>
-                    )
+                        Log Out
+                    </Link>
                 }}
-            </ContextConsumer>
-        )
-    }
-}
+            </Mutation>
+            )
+        }}
+    </ContextConsumer>
+)
 
 export default Logout
