@@ -79,8 +79,6 @@ class Login extends React.Component {
                                     customerAccessToken: data.customerAccessTokenCreate.customerAccessToken,
                                 })
 
-                                // TODO: also set inside localstorage
-
                                 console.log(data)
                                 navigate('/account')
                             }}
@@ -111,7 +109,7 @@ class Login extends React.Component {
                             }}
                         </Mutation>
                     </form>
-                    <Link to={`account/register`}>Register</Link>
+                    <Link to={`account/register`}>Sign Up</Link>
                 </>
             }}
             </ContextConsumer>

@@ -23,7 +23,6 @@ const Logout = () => (
             return (
             <Mutation
                 mutation={CUSTOMER_LOGOUT}
-                onError={this.error}
                 onCompleted={data => {
                     if (data.customerAccessTokenDelete.userErrors.length) return
 
@@ -31,8 +30,6 @@ const Logout = () => (
                         customerAccessToken: '',
                         cart: '',
                     })
-
-                    // TODO: also clear localstorage (including cart, etc.)
 
                     navigate('/account/login')
                 }}
