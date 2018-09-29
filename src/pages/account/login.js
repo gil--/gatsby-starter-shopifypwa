@@ -79,7 +79,6 @@ class Login extends React.Component {
                                     customerAccessToken: data.customerAccessTokenCreate.customerAccessToken,
                                 })
 
-                                console.log(data)
                                 navigate('/account')
                             }}
                         >
