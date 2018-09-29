@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import ContextConsumer from '../layouts/context'
+import AuthenticationWrapper from './account/AuthenticationWrapper'
 import Logout from './account/logout'
 
 const Header = ({ siteTitle }) => (
@@ -31,9 +31,8 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
-        <ContextConsumer>
-          {({ data, set }) => {
-            return (!data.customerAccessToken) ?
+        <AuthenticationWrapper
+          false={
             <>
               <Link
                 to="/account/login"
@@ -46,7 +45,8 @@ const Header = ({ siteTitle }) => (
                 Sign Up
               </Link>
             </>
-            :
+          }
+          true={
             <>
               <Link
                 to="/account"
@@ -55,8 +55,8 @@ const Header = ({ siteTitle }) => (
               </Link>
               <Logout />
             </>
-          }}
-        </ContextConsumer>
+          }
+        />
       </h1>
     </div>
   </div>
