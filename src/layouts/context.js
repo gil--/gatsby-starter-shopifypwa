@@ -1,10 +1,6 @@
 import React from "react"
 
 const defaultContextValue = {
-    data: {
-        // set your initial data shape here
-        showMenu: false,
-    },
     set: () => { },
 }
 
@@ -16,18 +12,42 @@ class ContextProviderComponent extends React.Component {
 
         this.setData = this.setData.bind(this)
         this.state = {
+            data: {
+                // set your initial data shape here
+                customerAccessToken: this.getLocalStorageFromKey('customerAccessToken'),
+                showMenu: false,
+            },
             ...defaultContextValue,
             set: this.setData,
         }
     }
 
-    setData(newData) {
+    getLocalStorageFromKey(key) {
+        try {
+            return JSON.parse(localStorage.getItem(key))
+        } catch(e) {
+            // error retrieving
+            return ''
+        }
+    }
+
+    setData(newData, shouldStoreLocal = true) {
         this.setState(state => ({
             data: {
                 ...state.data,
                 ...newData,
             },
         }))
+
+        if (!shouldStoreLocal) return
+
+        Object.keys(newData).forEach(key => {
+            try {
+                localStorage.setItem(key, JSON.stringify(newData[key]));
+            } catch (e) {
+                console.log(e)
+            }
+        })
     }
 
     render() {
