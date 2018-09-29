@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import ContextConsumer from '../layouts/context'
 
 const Header = ({ siteTitle }) => (
   <div
@@ -29,6 +30,29 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
+        <ContextConsumer>
+          {({ data }) => {
+            return (!data.customerAccessToken) ?
+            <>
+              <Link
+                to="/account/login"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/account/register"
+              >
+                Sign Up
+              </Link>
+            </>
+            :
+            <Link
+              to="/account"
+            >
+              My Account
+            </Link>
+          }}
+        </ContextConsumer>
       </h1>
     </div>
   </div>
