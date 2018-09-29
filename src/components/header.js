@@ -1,6 +1,7 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../layouts/context'
+import Logout from './account/logout'
 
 const Header = ({ siteTitle }) => (
   <div
@@ -31,7 +32,7 @@ const Header = ({ siteTitle }) => (
           {siteTitle}
         </Link>
         <ContextConsumer>
-          {({ data }) => {
+          {({ data, set }) => {
             return (!data.customerAccessToken) ?
             <>
               <Link
@@ -46,11 +47,14 @@ const Header = ({ siteTitle }) => (
               </Link>
             </>
             :
-            <Link
-              to="/account"
-            >
-              My Account
-            </Link>
+            <>
+              <Link
+                to="/account"
+              >
+                My Account
+              </Link>
+              <Logout />
+            </>
           }}
         </ContextConsumer>
       </h1>
