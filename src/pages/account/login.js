@@ -108,6 +108,7 @@ class Login extends React.Component {
                                     )
                                 }}
                             </Mutation>
+                            <Link to={`account/forgotpassword`}>Forgot Password</Link>
                         </form>
                         <Link to={`account/register`}>Sign Up</Link>
                     </>
