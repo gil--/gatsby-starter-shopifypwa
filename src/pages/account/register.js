@@ -2,6 +2,7 @@ import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link } from 'gatsby'
+import AuthenticationWrapper from '../../components/account/AuthenticationWrapper'
 
 const CUSTOMER_CREATE = gql`
 mutation customerCreate($input: CustomerCreateInput!) {
@@ -40,7 +41,7 @@ class Register extends React.Component {
     }
 
     render() {
-        return (
+        const pageContent = (
             <>
                 <h1>Sign Up</h1>
                 <form>
@@ -98,6 +99,13 @@ class Register extends React.Component {
                 </form>
                 <Link to={`account/login`}>Login</Link>
             </>
+        )
+
+        return (
+            <AuthenticationWrapper
+                navigate={`/account`}
+                false={pageContent}
+            />
         )
     }
 }
