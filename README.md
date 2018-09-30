@@ -28,6 +28,18 @@ Should strive to offer the same features as a normal Shopify theme such as easy 
 
 Copy .env.sample to .env.development and change the items to match your store. Make sure to add all .env keys and values in Netlify
 
+### Password Reset
+
+Shopify Password Resets urls do not currently work with the Storefront API and are also presented in a sturcture that requires custom Server-Side Routing. To simplify setup, change the following items in the *Customer account password reset* email notification template (**Settings > Notifications > Customer Account > Customer account password reset** or https://YOUR_STORE_NAME.myshopify.com/admin/email_templates/customer_account_reset/edit):
+
+```diff
+-<td class="button__cell"><a href="{{customer.reset_password_url}}" class="button__text">Reset your password</a></td>
++{% assign url_parts = customer.reset_password_url  | split: '/' %}
++<td class="button__cell"><a href="{{shop.url}}/account/reset?id={{url_parts[5]}}&token={{url_parts[6]}}" class="button__text">Reset your password</a></td>
+```
+
+We're basically splitting the reset password url into URL parameters which will make it MUCH easier for Gatsby to understand.
+
 ### Webhooks
 
 Setup webhooks with Netlify to auto-deploy after product creation, update, and deletion.
