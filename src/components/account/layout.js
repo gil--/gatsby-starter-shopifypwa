@@ -1,20 +1,13 @@
 import React from 'react'
-import { navigate } from 'gatsby'
-import ContextConsumer from '../../layouts/context'
+import AuthenticationWrapper from './AuthenticationWrapper'
 
 class AccountLayout extends React.Component {
     render() {
         return (
-            <ContextConsumer>
-                {({ data }) => {
-                    return (!data.customerAccessToken) ?
-                        (typeof window !== `undefined`)? navigate('/account/login') : ''
-                    :
-                    <>
-                        {this.props.children}
-                    </>
-                }}
-            </ContextConsumer>
+            <AuthenticationWrapper
+                navigate={`/account/login`}
+                true={this.props.children}
+            />
         )
     }
 }
