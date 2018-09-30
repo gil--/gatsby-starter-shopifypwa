@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import AuthenticationWrapper from './account/AuthenticationWrapper'
+import Logout from './account/logout'
 
 const Header = ({ siteTitle }) => (
   <div
@@ -29,6 +31,32 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
+        <AuthenticationWrapper
+          false={
+            <>
+              <Link
+                to="/account/login"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/account/register"
+              >
+                Sign Up
+              </Link>
+            </>
+          }
+          true={
+            <>
+              <Link
+                to="/account"
+              >
+                My Account
+              </Link>
+              <Logout />
+            </>
+          }
+        />
       </h1>
     </div>
   </div>
