@@ -1,7 +1,7 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link } from 'gatsby'
+import { Link, replace } from 'gatsby'
 import AuthenticationWrapper from '../../components/account/AuthenticationWrapper'
 
 const CUSTOMER_CREATE = gql`
@@ -102,10 +102,13 @@ class Register extends React.Component {
         )
 
         return (
-            <AuthenticationWrapper
-                navigate={`/account`}
-                false={pageContent}
-            />
+            <AuthenticationWrapper>
+                {({ isAuthenticated }) => (
+                    (!isAuthenticated)
+                        ? replace(`/account`)
+                        : pageContent
+                )}
+            </AuthenticationWrapper>
         )
     }
 }

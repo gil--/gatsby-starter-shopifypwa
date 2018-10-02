@@ -31,32 +31,32 @@ const Header = ({ siteTitle }) => (
         >
           {siteTitle}
         </Link>
-        <AuthenticationWrapper
-          false={
-            <>
-              <Link
-                to="/account/login"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/account/register"
-              >
-                Sign Up
-              </Link>
-            </>
-          }
-          true={
-            <>
-              <Link
-                to="/account"
-              >
-                My Account
-              </Link>
-              <Logout />
-            </>
-          }
-        />
+        <AuthenticationWrapper>
+          {({isAuthenticated}) => {
+            return (
+            (!isAuthenticated)
+              ? <>
+                  <Link
+                    to="/account/login"
+                  >
+                    Log In
+                  </Link>
+                    <Link
+                      to="/account/register"
+                    >
+                      Sign Up
+                  </Link>
+                </>
+              : <>
+                  <Link
+                    to="/account"
+                  >
+                    My Account
+                </Link>
+                  <Logout />
+                </>
+          )}}
+        </AuthenticationWrapper>
       </h1>
     </div>
   </div>
