@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
-import AuthenticationWrapper from '../../components/account/AuthenticationWrapper'
+import GuestLayout from '../../components/account/GuestLayout'
+import PropTypes from 'prop-types';
 
 const CUSTOMER_RESET = gql`
 mutation customerRecover($email: String!) {
@@ -83,10 +84,9 @@ class ForgotPassword extends React.Component {
         )
 
         return (
-            <AuthenticationWrapper
-                navigate={`/account`}
-                false={pageContent}
-            />
+            <GuestLayout>
+                {pageContent}
+            </GuestLayout>
         )
     }
 }

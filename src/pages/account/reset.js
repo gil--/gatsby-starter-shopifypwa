@@ -1,9 +1,9 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link, navigate } from 'gatsby'
+import { Link, navigate, replace } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
-import AuthenticationWrapper from '../../components/account/AuthenticationWrapper'
+import GuestLayout from '../../components/account/GuestLayout'
 
 const CUSTOMER_RESET = gql`
 mutation customerReset($id: ID!, $input: CustomerResetInput!) {
@@ -135,11 +135,9 @@ class ResetPassword extends React.Component {
         return (
             (!this.state.customerId || !this.state.resetToken) ?
             <p>Malformed password reset url.</p>
-            :
-            <AuthenticationWrapper
-                navigate={`/account`}
-                false={pageContent}
-            />
+                : <GuestLayout>
+                    {pageContent}
+                </GuestLayout>
         )
     }
 }
