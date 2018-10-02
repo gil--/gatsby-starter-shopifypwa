@@ -42,19 +42,11 @@ class ResetPassword extends React.Component {
         })
     }
 
-    handlePasswordChange = e => {
+    handleInputChange = e => {
         e.preventDefault()
 
         this.setState({
             password: e.target.value,
-        })
-    }
-
-    handlePasswordVerificationChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            passwordVerification: e.target.value,
         })
     }
 
@@ -68,11 +60,11 @@ class ResetPassword extends React.Component {
                             <ul>
                                 <li>
                                     <label htmlFor="forgotPass">New Password</label>
-                                    <input id="forgotPass" type="password" value={this.state.password} onChange={this.handlePasswordChange} required="" />
+                                    <input id="forgotPass" type="password" value={this.state.password} name="password" onChange={this.handleInputChange} required="" />
                                 </li>
                                 <li>
                                     <label htmlFor="forgotPassVerify">Verify New Password</label>
-                                    <input id="forgotPassVerify" type="password" value={this.state.passwordVerification} onChange={this.handlePasswordVerificationChange} required="" />
+                                    <input id="forgotPassVerify" type="password" value={this.state.passwordVerification} name="passwordVerification" onChange={this.handleInputChange} required="" />
                                 </li>
                             </ul>
                             <Mutation

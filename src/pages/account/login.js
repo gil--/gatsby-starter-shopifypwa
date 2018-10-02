@@ -30,19 +30,13 @@ class Login extends React.Component {
         password: '',
     }
 
-    handleEmailChange = e => {
+    handleInputChange = e => {
         e.preventDefault()
 
-        this.setState({
-            email: e.target.value,
-        });
-    }
-
-    handlePasswordChange = e => {
-        e.preventDefault()
+        const { name, value } = e.target
 
         this.setState({
-            password: e.target.value,
+            name: value,
         });
     }
 
@@ -56,11 +50,11 @@ class Login extends React.Component {
                             <ul>
                                 <li>
                                     <label htmlFor="loginEmail">Email</label>
-                                    <input id="loginEmail" type="email" value={this.state.email} onChange={this.handleEmailChange} required="" />
+                                    <input id="loginEmail" type="email" name="email" value={this.state.email} onChange={this.handleInputChange} required="" />
                                 </li>
                                 <li>
                                     <label htmlFor="loginPassword">Password</label>
-                                    <input id="loginPassword" type="password" value={this.state.password} onChange={this.handlePasswordChange} required="" />
+                                    <input id="loginPassword" type="password" name="password" value={this.state.password} onChange={this.handleInputChange} required="" />
                                 </li>
                             </ul>
                             <Mutation
