@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "author": "Gil Greenberg <gilgreenberg@gmail.com>",
   "dependencies": {
+    "formik": "^1.3.0",
     "gatsby": "^2.0.0",
     "gatsby-plugin-apollo-shopify": "^1.0.2",
     "gatsby-plugin-layout": "^1.0.1",
