@@ -1,9 +1,9 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link, navigate, replace } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
-import AuthenticationWrapper from '../../components/account/AuthenticationWrapper'
+import GuestLayout from '../../components/account/GuestLayout'
 import PropTypes from 'prop-types';
 
 const CUSTOMER_RESET = gql`
@@ -84,13 +84,9 @@ class ForgotPassword extends React.Component {
         )
 
         return (
-            <AuthenticationWrapper>
-                {({ isAuthenticated }) => (
-                    (isAuthenticated)
-                        ? replace(`/account`)
-                        : pageContent
-                )}
-            </AuthenticationWrapper>
+            <GuestLayout>
+                {pageContent}
+            </GuestLayout>
         )
     }
 }
