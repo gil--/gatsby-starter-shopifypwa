@@ -9,7 +9,7 @@ class GuestLayout extends React.Component {
             <AuthenticationWrapper>
                 {({ isAuthenticated }) => (
                     (isAuthenticated)
-                        ? replace(`/account`)
+                        ? (typeof window !== 'undefined') ? replace(`/account`) : null
                         : this.props.children
                 )}
             </AuthenticationWrapper>

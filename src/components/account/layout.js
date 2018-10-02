@@ -10,7 +10,7 @@ class AccountLayout extends React.Component {
                 {({ isAuthenticated }) => (
                     (isAuthenticated)
                         ? this.props.children
-                        : replace(`/account/login`)
+                        : (typeof window !== 'undefined') ? replace(`/account/login`) : null
                 )}
             </AuthenticationWrapper>
         )
