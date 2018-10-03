@@ -31,6 +31,19 @@ const FormSchema = Yup.object().shape({
 })
 
 class Register extends React.Component {
+    constructor(props) {
+        super(props);
+        this.firstInput = React.createRef()
+    }
+
+    handleFirstInputFocus() {
+        this.firstInput.current.focus()
+    }
+
+    componentDidMount() {
+        this.handleFirstInputFocus()
+    }
+
     render() {
         const pageContent = (
             <>
@@ -93,7 +106,7 @@ class Register extends React.Component {
                                         <ul>
                                             <li>
                                                 <label htmlFor="loginEmail">Email</label>
-                                                <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} placeholder="email@gmail.com" required="" autoFocus="" />
+                                                <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} placeholder="email@gmail.com" required="" ref={this.firstInput} />
                                                 <ErrorMessage component="div" name="email" />
                                             </li>
                                             <li>

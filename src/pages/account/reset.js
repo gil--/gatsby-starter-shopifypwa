@@ -35,6 +35,19 @@ const FormSchema = Yup.object().shape({
 })
 
 class ResetPassword extends React.Component {
+    constructor(props) {
+        super(props);
+        this.firstInput = React.createRef();
+    }
+
+    handleFirstInputFocus() {
+        this.firstInput.current.focus()
+    }
+
+    componentDidMount() {
+        this.handleFirstInputFocus()
+    }
+
     state = {
         customerId: '',
         resetToken: '',
@@ -103,7 +116,7 @@ class ResetPassword extends React.Component {
                                                 <ul>
                                                     <li>
                                                         <label htmlFor="forgotPass">New Password</label>
-                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" autoFocus="" />
+                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" ref={this.firstInput} />
                                                         <ErrorMessage component="div" name="password" />
                                                     </li>
                                                     <li>

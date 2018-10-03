@@ -32,6 +32,19 @@ const FormSchema = Yup.object().shape({
 })
 
 class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.firstInput = React.createRef();
+    }
+
+    handleFirstInputFocus() {
+        this.firstInput.current.focus()
+    }
+
+    componentDidMount() {
+        this.handleFirstInputFocus()
+    }
+
     render () {
         const pageContent = (
             <ContextConsumer>
@@ -83,7 +96,7 @@ class Login extends React.Component {
                                                 <ul>
                                                     <li>
                                                         <label htmlFor="loginEmail">Email</label>
-                                                        <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" />
+                                                        <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" ref={this.firstInput} />
                                                         <ErrorMessage component="div" name="email" />
                                                     </li>
                                                     <li>

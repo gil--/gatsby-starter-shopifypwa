@@ -26,6 +26,19 @@ const FormSchema = Yup.object().shape({
 })
 
 class ForgotPassword extends React.Component {
+    constructor(props) {
+        super(props);
+        this.firstInput = React.createRef()
+    }
+
+    handleFirstInputFocus() {
+        this.firstInput.current.focus()
+    }
+
+    componentDidMount() {
+        this.handleFirstInputFocus()
+    }
+
     render() {
         const pageContent = (
             <>
@@ -73,7 +86,7 @@ class ForgotPassword extends React.Component {
                                         <ul>
                                             <li>
                                                 <label htmlFor="forgotEmail">Email</label>
-                                                <input id="forgotEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" autoFocus="" />
+                                                <input id="forgotEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" ref={this.firstInput} />
                                                 <ErrorMessage component="div" name="email" />
                                             </li>
                                         </ul>
