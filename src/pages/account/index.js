@@ -52,23 +52,65 @@ class Account extends React.Component {
                             variables={{ customerAccessToken: data.customerAccessToken.accessToken }}
                         >
                             {({ loading, error, data }) => {
-                                if (loading) return <div>Loading Account Information...</div>
                                 if (error) return <div>Error :(</div>
+                                let greeting = `Welcome back!`
 
-                                const { firstName, lastName, email, phone } = data.customer;
-
-                                return (
+                                if (loading) return (
                                     <>
-                                        Welcome back {firstName} {lastName}!
+                                        <p>{greeting}</p>
 
                                         <h2>Account Info</h2>
                                         <div>
                                             <h3>Email</h3>
-                                            {email}
+                                            <p></p>
                                         </div>
+                                        {
+                                            phone
+                                                ? (
+                                                    <div>
+                                                        <h3>Phone</h3>
+                                                        <p></p>
+                                                    </div>
+                                                )
+                                                : ''
+                                        }
                                         <div>
-                                            <h3>Phone</h3>
-                                            {phone}
+                                            <h3>Order History</h3>
+                                            <p></p>
+                                        </div>
+                                    </>
+                                )
+
+                                const { firstName, email, phone, orders } = data.customer;
+
+                                greeting = (firstName) ? `Welcome back ${firstName}!` : greeting
+
+                                return (
+                                    <>
+                                        <p>{greeting}</p>
+
+                                        <h2>Account Info</h2>
+                                        <div>
+                                            <h3>Email</h3>
+                                            <p>{email}</p>
+                                        </div>
+                                        {
+                                            phone
+                                                ? (
+                                                    <div>
+                                                        <h3>Phone</h3>
+                                                        <p>{phone}</p>
+                                                    </div>
+                                                )
+                                                : ''
+                                        }
+                                        <div>
+                                            <h3>Order History</h3>
+                                            {
+                                                orders.length
+                                                    ? 'TOOD: SHOW ORDERS'
+                                                    : <p>You haven't placed any orders yet.</p>
+                                            }
                                         </div>
                                     </>
                                 )
