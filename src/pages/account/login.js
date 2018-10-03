@@ -5,6 +5,7 @@ import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
 import GuestLayout from '../../components/account/GuestLayout'
 import { Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_LOGIN = gql`
@@ -22,6 +23,14 @@ mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
 }
 `
 
+const FormSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is Required'),
+    password: Yup.string()
+        .required('Password is Required'),
+})
+
 class Login extends React.Component {
     render () {
         const pageContent = (
@@ -38,6 +47,7 @@ class Login extends React.Component {
                                             email: '',
                                             password: '',
                                         }}
+                                        validationSchema={FormSchema}
                                         onSubmit={
                                             (values, actions) => {
                                                 if (!values.email || !values.password) {
@@ -63,7 +73,15 @@ class Login extends React.Component {
                                                 })
                                             }
                                         }
-                                        render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                        render={({
+                                            handleSubmit,
+                                            handleChange,
+                                            handleBlur,
+                                            isSubmitting,
+                                            values,
+                                            errors,
+                                            touched
+                                        }) => (
                                             <form onSubmit={handleSubmit}>
                                                 <ErrorMessage name="form" />
                                                 <ul>
@@ -81,7 +99,11 @@ class Login extends React.Component {
                                                 {
                                                     (loading)
                                                         ? <button disabled="disabled">Logging In</button>
-                                                        : <button>Log In</button>
+                                                        : <button disabled={
+                                                            isSubmitting ||
+                                                            !!(errors.email && touched.email) ||
+                                                            !!(errors.password && touched.password)
+                                                            }>Log In</button>
                                                 }
                                             </form>
                                         )}
