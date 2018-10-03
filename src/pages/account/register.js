@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import GuestLayout from '../../components/account/GuestLayout'
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_CREATE = gql`
@@ -20,6 +21,14 @@ mutation customerCreate($input: CustomerCreateInput!) {
     }
 }
 `
+
+const FormSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is Required'),
+    password: Yup.string()
+        .required('Password is Required'),
+})
 
 class Register extends React.Component {
     render() {
@@ -49,13 +58,9 @@ class Register extends React.Component {
                                     email: '',
                                     password: '',
                                 }}
-
+                                validationSchema={FormSchema}
                                 onSubmit={
                                     (values, actions) => {
-                                        if (!values.email || !values.password) {
-                                            return
-                                        }
-
                                         customerCreate({
                                             variables: {
                                                 input: {
@@ -74,25 +79,37 @@ class Register extends React.Component {
                                         })
                                     }
                                 }
-                                render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                render={({
+                                    handleSubmit,
+                                    handleChange,
+                                    handleBlur,
+                                    isSubmitting,
+                                    values,
+                                    errors,
+                                    touched
+                                }) => (
                                     <form onSubmit={handleSubmit}>
                                         <ErrorMessage name="form" />
                                         <ul>
                                             <li>
                                                 <label htmlFor="loginEmail">Email</label>
-                                                <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} placeholder="email@gmail.com" required="" />
-                                                <ErrorMessage name="email" />
+                                                <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} placeholder="email@gmail.com" required="" autoFocus="" />
+                                                <ErrorMessage component="div" name="email" />
                                             </li>
                                             <li>
                                                 <label htmlFor="loginPassword">Password</label>
                                                 <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
-                                                <ErrorMessage name="password" />
+                                                <ErrorMessage component="div" name="password" />
                                             </li>
                                         </ul>
                                         {
                                             (loading)
                                             ? <button disabled="disabled">Creating Account...</button>
-                                            : <button>Sign Up</button>
+                                            : <button disabled={
+                                                isSubmitting ||
+                                                !!(errors.email && touched.email) ||
+                                                !!(errors.password && touched.password)
+                                                }>Sign Up</button>
                                         }
                                     </form>
                                 )}

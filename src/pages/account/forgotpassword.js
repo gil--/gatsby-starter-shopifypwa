@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import GuestLayout from '../../components/account/GuestLayout'
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
 import PropTypes from 'prop-types';
 
@@ -16,8 +17,13 @@ mutation customerRecover($email: String!) {
         }
     }
 }
-
 `
+
+const FormSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is Required'),
+})
 
 class ForgotPassword extends React.Component {
     render() {
@@ -32,6 +38,7 @@ class ForgotPassword extends React.Component {
                                     form: '',
                                     email: '',
                                 }}
+                                validationSchema={FormSchema}
                                 onSubmit={
                                     (values, actions) => {
                                         if (!values.email) {
@@ -52,20 +59,31 @@ class ForgotPassword extends React.Component {
                                         })
                                     }
                                 }
-                                render = {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                render={({
+                                    handleSubmit,
+                                    handleChange,
+                                    handleBlur,
+                                    isSubmitting,
+                                    values,
+                                    errors,
+                                    touched
+                                }) => (
                                     <form onSubmit={handleSubmit}>
                                         <ErrorMessage name="form" />
                                         <ul>
                                             <li>
                                                 <label htmlFor="forgotEmail">Email</label>
-                                                <input id="forgotEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" />
-                                                <ErrorMessage name="email" />
+                                                <input id="forgotEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" autoFocus="" />
+                                                <ErrorMessage component="div" name="email" />
                                             </li>
                                         </ul>
                                         {
                                             (loading)
                                                 ? <button disabled="disabled">Requesting Reset...</button>
-                                                : <button>Reset Password</button>
+                                                : <button disabled={
+                                                isSubmitting ||
+                                                !!(errors.email && touched.email)
+                                                }>Reset Password</button>
                                         }
                                     </form>
                                 )}

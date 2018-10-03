@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
 import GuestLayout from '../../components/account/GuestLayout'
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
 
@@ -50,10 +50,6 @@ class Login extends React.Component {
                                         validationSchema={FormSchema}
                                         onSubmit={
                                             (values, actions) => {
-                                                if (!values.email || !values.password) {
-                                                    return
-                                                }
-
                                                 customerLogin({
                                                     variables: {
                                                         input: {
@@ -88,12 +84,12 @@ class Login extends React.Component {
                                                     <li>
                                                         <label htmlFor="loginEmail">Email</label>
                                                         <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" />
-                                                        <ErrorMessage name="email" />
+                                                        <ErrorMessage component="div" name="email" />
                                                     </li>
                                                     <li>
                                                         <label htmlFor="loginPassword">Password</label>
                                                         <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
-                                                        <ErrorMessage name="password" />
+                                                        <ErrorMessage component="div" name="password" />
                                                     </li>
                                                 </ul>
                                                 {

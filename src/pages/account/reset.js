@@ -4,7 +4,8 @@ import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
 import GuestLayout from '../../components/account/GuestLayout'
-import { Formik, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_RESET = gql`
@@ -24,6 +25,14 @@ mutation customerReset($id: ID!, $input: CustomerResetInput!) {
     }
 }
 `
+
+const FormSchema = Yup.object().shape({
+    password: Yup.string()
+        .required('Password is Required'),
+    passwordVerification: Yup.string()
+        .oneOf([Yup.ref('password')], 'Password and confirmation must been the same')
+        .required('Password Confirmation is Required'),
+})
 
 class ResetPassword extends React.Component {
     state = {
@@ -57,15 +66,9 @@ class ResetPassword extends React.Component {
                                             password: '',
                                             passwordVerification: '',
                                         }}
+                                        validationSchema={FormSchema}
                                         onSubmit={
                                             (values, actions) => {
-                                                if (!values.password ||
-                                                    !values.passwordVerification ||
-                                                    values.password !== values.passwordVerification) {
-                                                    // TODO: return FORM error
-                                                    return
-                                                }
-
                                                 resetPassword({
                                                     variables: {
                                                         "id": this.state.customerId,
@@ -86,25 +89,37 @@ class ResetPassword extends React.Component {
                                                 })
                                             }
                                         }
-                                        render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                        render={({
+                                            handleSubmit,
+                                            handleChange,
+                                            handleBlur,
+                                            isSubmitting,
+                                            values,
+                                            errors,
+                                            touched
+                                        }) => (
                                             <form onSubmit={handleSubmit}>
                                                 <ErrorMessage name="form" />
                                                 <ul>
                                                     <li>
                                                         <label htmlFor="forgotPass">New Password</label>
-                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" />
-                                                        <ErrorMessage name="password" />
+                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" autoFocus="" />
+                                                        <ErrorMessage component="div" name="password" />
                                                     </li>
                                                     <li>
                                                         <label htmlFor="forgotPassVerify">Verify New Password</label>
                                                         <input id="forgotPassVerify" type="password" name="passwordVerification" value={values.passwordVerification} onChange={handleChange} required="" />
-                                                        <ErrorMessage name="passwordVerification" />
+                                                        <ErrorMessage component="div" name="passwordVerification" />
                                                     </li>
                                                 </ul>
                                                 {
                                                 (loading)
                                                     ? <button disabled="disabled">Resetting Password...</button>
-                                                    : <button>Reset Password</button>
+                                                    : <button disabled={
+                                                        isSubmitting ||
+                                                        !!(errors.password && touched.password) ||
+                                                        !!(errors.passwordVerification && touched.passwordVerification)
+                                                        }>Reset Password</button>
                                                 }
                                             </form>
                                         )}
