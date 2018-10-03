@@ -1,103 +1,106 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import GuestLayout from '../../components/account/GuestLayout'
+import { Formik, ErrorMessage } from 'formik';
+import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_CREATE = gql`
 mutation customerCreate($input: CustomerCreateInput!) {
     customerCreate(input: $input) {
-        userErrors {
-            field
-            message
-        }
         customer {
             id
+        }
+        customerUserErrors {
+            code
+            field
+            message
         }
     }
 }
 `
 
 class Register extends React.Component {
-    state = {
-        email: '',
-        password: '',
-    }
-
-    handleEmailChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            email: e.target.value,
-        });
-    }
-
-    handlePasswordChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            password: e.target.value,
-        });
-    }
-
     render() {
         const pageContent = (
             <>
                 <h1>Sign Up</h1>
-                <form>
-                    <ul>
-                        <li>
-                            <label htmlFor="loginEmail">Email</label>
-                            <input id="loginEmail" type="email" value={this.state.email} onChange={this.handleEmailChange} required="" />
-                        </li>
-                        <li>
-                            <label htmlFor="loginPassword">Password</label>
-                            <input id="loginPassword" type="password" value={this.state.password} onChange={this.handlePasswordChange} required="" />
-                        </li>
-                    </ul>
-                    <Mutation
-                        mutation={CUSTOMER_CREATE}
-                        onError={this.error}
-                        onCompleted={data => {
-                            if (data.customerCreate.userErrors.length) {
-                                return
-                            }
+                <Mutation mutation={CUSTOMER_CREATE}
+                    onError={errors => {
+                        console.log(errors)
+                        // errors.forEach(error => {
+                        //     console.log(error)
+                        // })
+                    }}
+                >
+                    {(customerCreate, { data, loading, errors }) => {
+                        if (errors) {
+                            console.log(errors)
+                            // errors.forEach(error => {
+                            //     formErrors.push(error.message);
+                            // })
+                        }
 
-                            this.setState({
-                                email: '',
-                                password: '',
-                            })
+                        return (
+                            <Formik
+                                initialValues={{
+                                    form: '',
+                                    email: '',
+                                    password: '',
+                                }}
 
-                            console.log(data)
-                        }}
-                    >
-                        {(customerCreate, { loading }) => {
-                            if (loading) return <button disabled="disabled">Creating Account</button>
-
-                            return (
-                                <button
-                                    onClick={e => {
-                                        e.preventDefault()
-
-                                        if (!this.state.email || !this.state.password) {
+                                onSubmit={
+                                    (values, actions) => {
+                                        if (!values.email || !values.password) {
                                             return
                                         }
 
                                         customerCreate({
                                             variables: {
                                                 input: {
-                                                    "email": this.state.email,
-                                                    "password": this.state.password,
+                                                    "email": values.email,
+                                                    "password": values.password,
                                                 }
                                             }
+                                        }).then((res) => {
+                                            if (res.data.customerCreate.customer) {
+                                                // TODO: Push new Toaster Notification SUCCESS Registration
+                                                navigate(`/account/login`)
+                                            } else {
+                                                const errors = parseErrors(res.data.customerRecover.userErrors)
+                                                actions.setErrors(errors)
+                                            }
                                         })
-                                    }}
-                                >Sign Up</button>
-                            )
-                        }}
-                    </Mutation>
-                </form>
-                <Link to={`account/login`}>Login</Link>
+                                    }
+                                }
+                                render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <ErrorMessage name="form" />
+                                        <ul>
+                                            <li>
+                                                <label htmlFor="loginEmail">Email</label>
+                                                <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} placeholder="email@gmail.com" required="" />
+                                                <ErrorMessage name="email" />
+                                            </li>
+                                            <li>
+                                                <label htmlFor="loginPassword">Password</label>
+                                                <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
+                                                <ErrorMessage name="password" />
+                                            </li>
+                                        </ul>
+                                        {
+                                            (loading)
+                                            ? <button disabled="disabled">Creating Account...</button>
+                                            : <button>Sign Up</button>
+                                        }
+                                    </form>
+                                )}
+                            />
+                        )
+                    }}
+                </Mutation>
+                <Link to={`/account/login`}>Login</Link>
             </>
         )
 

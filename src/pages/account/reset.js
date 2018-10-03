@@ -1,9 +1,11 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link, navigate, replace } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
 import GuestLayout from '../../components/account/GuestLayout'
+import { Formik, ErrorMessage } from 'formik';
+import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_RESET = gql`
 mutation customerReset($id: ID!, $input: CustomerResetInput!) {
@@ -25,8 +27,6 @@ mutation customerReset($id: ID!, $input: CustomerResetInput!) {
 
 class ResetPassword extends React.Component {
     state = {
-        password: '',
-        passwordVerification: '',
         customerId: '',
         resetToken: '',
     }
@@ -42,71 +42,26 @@ class ResetPassword extends React.Component {
         })
     }
 
-    handlePasswordChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            password: e.target.value,
-        })
-    }
-
-    handlePasswordVerificationChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            passwordVerification: e.target.value,
-        })
-    }
-
     render() {
         const pageContent = (
             <ContextConsumer>
                 {({ set }) => {
                     return <>
                         <h1>Reset Your Password</h1>
-                        <form>
-                            <ul>
-                                <li>
-                                    <label htmlFor="forgotPass">New Password</label>
-                                    <input id="forgotPass" type="password" value={this.state.password} onChange={this.handlePasswordChange} required="" />
-                                </li>
-                                <li>
-                                    <label htmlFor="forgotPassVerify">Verify New Password</label>
-                                    <input id="forgotPassVerify" type="password" value={this.state.passwordVerification} onChange={this.handlePasswordVerificationChange} required="" />
-                                </li>
-                            </ul>
-                            <Mutation
-                                mutation={CUSTOMER_RESET}
-                                onCompleted={data => {
-                                    if (data.customerReset.userErrors.length) {
-                                        return
-                                    }
-
-                                    this.setState({
-                                        password: '',
-                                        passwordVerification: '',
-                                        customerId: '',
-                                        resetToken: '',
-                                    })
-
-                                    set({
-                                        customerAccessToken: data.customerReset.customerAccessToken,
-                                    })
-
-                                    navigate('/account')
-                                }}
-                            >
-                                {(resetPassword, { loading }) => {
-                                    if (loading) return <button disabled="disabled">Changing Password...</button>
-
-                                    return (
-                                        <button
-                                            onClick={e => {
-                                                e.preventDefault()
-
-                                                if (!this.state.password ||
-                                                    !this.state.passwordVerification ||
-                                                    this.state.password != this.state.passwordVerification) {
+                        <Mutation mutation={CUSTOMER_RESET}>
+                            {(resetPassword, { loading }) => {
+                                return (
+                                    <Formik
+                                        initialValues={{
+                                            form: '',
+                                            password: '',
+                                            passwordVerification: '',
+                                        }}
+                                        onSubmit={
+                                            (values, actions) => {
+                                                if (!values.password ||
+                                                    !values.passwordVerification ||
+                                                    values.password !== values.passwordVerification) {
                                                     // TODO: return FORM error
                                                     return
                                                 }
@@ -116,17 +71,48 @@ class ResetPassword extends React.Component {
                                                         "id": this.state.customerId,
                                                         "input": {
                                                             "resetToken": this.state.resetToken,
-                                                            "password": this.state.password
+                                                            "password": values.password
                                                         }
                                                     }
+                                                }).then((res) => {
+                                                    if (res.data.customerReset.customerAccessToken) {
+                                                        set({
+                                                            customerAccessToken: res.data.customerReset.customerAccessToken,
+                                                        })
+                                                    } else {
+                                                        const errors = parseErrors(res.data.customerReset.userErrors)
+                                                        actions.setErrors(errors)
+                                                    }
                                                 })
-                                            }}
-                                        >Reset Password</button>
-                                    )
-                                }}
-                            </Mutation>
-                        </form>
-                        <Link to={`account/login`}>Log In</Link>
+                                            }
+                                        }
+                                        render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                            <form onSubmit={handleSubmit}>
+                                                <ErrorMessage name="form" />
+                                                <ul>
+                                                    <li>
+                                                        <label htmlFor="forgotPass">New Password</label>
+                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" />
+                                                        <ErrorMessage name="password" />
+                                                    </li>
+                                                    <li>
+                                                        <label htmlFor="forgotPassVerify">Verify New Password</label>
+                                                        <input id="forgotPassVerify" type="password" name="passwordVerification" value={values.passwordVerification} onChange={handleChange} required="" />
+                                                        <ErrorMessage name="passwordVerification" />
+                                                    </li>
+                                                </ul>
+                                                {
+                                                (loading)
+                                                    ? <button disabled="disabled">Resetting Password...</button>
+                                                    : <button>Reset Password</button>
+                                                }
+                                            </form>
+                                        )}
+                                    />
+                                )
+                            }}
+                        </Mutation>
+                        <Link to={`/account/login`}>Log In</Link>
                     </>
                 }}
             </ContextConsumer>

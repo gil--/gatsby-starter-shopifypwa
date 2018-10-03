@@ -4,14 +4,12 @@ import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import ContextConsumer from '../../layouts/context'
 import GuestLayout from '../../components/account/GuestLayout'
+import { Formik, ErrorMessage } from 'formik';
+import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_LOGIN = gql`
 mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
     customerAccessTokenCreate(input: $input) {
-        userErrors {
-            field
-            message
-        }
         customerAccessToken {
             accessToken
             expiresAt
@@ -25,92 +23,74 @@ mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
 `
 
 class Login extends React.Component {
-    state = {
-        email: '',
-        password: '',
-    }
-
-    handleEmailChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            email: e.target.value,
-        });
-    }
-
-    handlePasswordChange = e => {
-        e.preventDefault()
-
-        this.setState({
-            password: e.target.value,
-        });
-    }
-
     render () {
         const pageContent = (
             <ContextConsumer>
                 {({ set }) => {
                     return <>
                         <h1>Log In</h1>
-                        <form>
-                            <ul>
-                                <li>
-                                    <label htmlFor="loginEmail">Email</label>
-                                    <input id="loginEmail" type="email" value={this.state.email} onChange={this.handleEmailChange} required="" />
-                                </li>
-                                <li>
-                                    <label htmlFor="loginPassword">Password</label>
-                                    <input id="loginPassword" type="password" value={this.state.password} onChange={this.handlePasswordChange} required="" />
-                                </li>
-                            </ul>
-                            <Mutation
-                                mutation={CUSTOMER_LOGIN}
-                                onError={this.error}
-                                onCompleted={data => {
-                                    if (data.customerAccessTokenCreate.userErrors.length || data.customerAccessTokenCreate.customerUserErrors.length) {
-                                        return
-                                    }
-
-                                    this.setState({
-                                        email: '',
-                                        password: '',
-                                    })
-
-                                    set({
-                                        customerAccessToken: data.customerAccessTokenCreate.customerAccessToken,
-                                    })
-
-                                    navigate('/account')
-                                }}
-                            >
-                                {(customerLogin, { loading }) => {
-                                    if (loading) return <button disabled="disabled">Logging In</button>
-
-                                    return (
-                                        <button
-                                            onClick={e => {
-                                                e.preventDefault()
-
-                                                if (!this.state.email || !this.state.password) {
+                        <Mutation mutation={CUSTOMER_LOGIN}>
+                            {(customerLogin, { loading }) => {
+                                return (
+                                    <Formik
+                                        initialValues={{
+                                            form: '',
+                                            email: '',
+                                            password: '',
+                                        }}
+                                        onSubmit={
+                                            (values, actions) => {
+                                                if (!values.email || !values.password) {
                                                     return
                                                 }
 
                                                 customerLogin({
                                                     variables: {
                                                         input: {
-                                                            "email": this.state.email,
-                                                            "password": this.state.password,
+                                                            "email": values.email,
+                                                            "password": values.password,
                                                         }
                                                     }
+                                                }).then((res) => {
+                                                    if (res.data.customerAccessTokenCreate.customerAccessToken) {
+                                                        set({
+                                                            customerAccessToken: res.data.customerAccessTokenCreate.customerAccessToken,
+                                                        })
+                                                    } else {
+                                                        const errors = parseErrors(res.data.customerAccessTokenCreate.customerUserErrors)
+                                                        actions.setErrors(errors)
+                                                    }
                                                 })
-                                            }}
-                                        >Log In</button>
-                                    )
-                                }}
-                            </Mutation>
-                            <Link to={`account/forgotpassword`}>Forgot Password</Link>
-                        </form>
-                        <Link to={`account/register`}>Sign Up</Link>
+                                            }
+                                        }
+                                        render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                            <form onSubmit={handleSubmit}>
+                                                <ErrorMessage name="form" />
+                                                <ul>
+                                                    <li>
+                                                        <label htmlFor="loginEmail">Email</label>
+                                                        <input id="loginEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" />
+                                                        <ErrorMessage name="email" />
+                                                    </li>
+                                                    <li>
+                                                        <label htmlFor="loginPassword">Password</label>
+                                                        <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
+                                                        <ErrorMessage name="password" />
+                                                    </li>
+                                                </ul>
+                                                {
+                                                    (loading)
+                                                        ? <button disabled="disabled">Logging In</button>
+                                                        : <button>Log In</button>
+                                                }
+                                            </form>
+                                        )}
+                                    />
+                                )
+                            }}
+                        </Mutation>
+                        <Link to={`/account/forgotpassword`}>Forgot Password</Link>
+                        <Link to={`/account/register`}>Sign Up</Link>
                     </>
                 }}
             </ContextConsumer>
