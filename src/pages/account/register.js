@@ -1,9 +1,10 @@
 import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import GuestLayout from '../../components/account/GuestLayout'
 import { Formik, ErrorMessage } from 'formik';
+import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_CREATE = gql`
 mutation customerCreate($input: CustomerCreateInput!) {
@@ -25,13 +26,7 @@ class Register extends React.Component {
         const pageContent = (
             <>
                 <h1>Sign Up</h1>
-                <Mutation
-                    mutation={CUSTOMER_CREATE}
-                    onCompleted={data => {
-                        if (data.customerCreate.customerUserErrors.length) {
-                            return
-                        }
-                    }}
+                <Mutation mutation={CUSTOMER_CREATE}
                     onError={errors => {
                         console.log(errors)
                         // errors.forEach(error => {
@@ -40,14 +35,6 @@ class Register extends React.Component {
                     }}
                 >
                     {(customerCreate, { data, loading, errors }) => {
-                        // let formErrors = []
-
-                        // if (data && data.customerCreate && data.customerCreate.customerUserErrors) {
-                        //     data.customerCreate.customerUserErrors.forEach(error => {
-                        //         formInputErrors[error.field[1]] = error.message
-                        //     })
-                        // }
-
                         if (errors) {
                             console.log(errors)
                             // errors.forEach(error => {
@@ -58,6 +45,7 @@ class Register extends React.Component {
                         return (
                             <Formik
                                 initialValues={{
+                                    form: '',
                                     email: '',
                                     password: '',
                                 }}
@@ -76,26 +64,19 @@ class Register extends React.Component {
                                                 }
                                             }
                                         }).then((res) => {
-                                            console.log(res)
-
                                             if (res.data.customerCreate.customer) {
-
+                                                // TODO: Push new Toaster Notification SUCCESS Registration
+                                                navigate(`/account/login`)
                                             } else {
-                                                let formInputErrors = {}
-                                                // extract to function. insert res.data.customerCreate.customerUserErrors and return object
-                                                // actions.setErrors(formInputErrors(res.data.customerCreate.customerUserErrors))
-                                                res.data.customerCreate.customerUserErrors.forEach(error => {
-                                                    if (error.field) {
-                                                        formInputErrors[error.field[1]] = error.message
-                                                    }
-                                                })
-                                                actions.setErrors(formInputErrors)
+                                                const errors = parseErrors(res.data.customerRecover.userErrors)
+                                                actions.setErrors(errors)
                                             }
                                         })
                                     }
                                 }
                                 render={({ handleSubmit, handleChange, handleBlur, values, errors }) => (
                                     <form onSubmit={handleSubmit}>
+                                        <ErrorMessage name="form" />
                                         <ul>
                                             <li>
                                                 <label htmlFor="loginEmail">Email</label>
@@ -110,7 +91,7 @@ class Register extends React.Component {
                                         </ul>
                                         {
                                             (loading)
-                                            ? (<button disabled="disabled">Creating Account</button>)
+                                            ? <button disabled="disabled">Creating Account...</button>
                                             : <button>Sign Up</button>
                                         }
                                     </form>
@@ -119,7 +100,7 @@ class Register extends React.Component {
                         )
                     }}
                 </Mutation>
-                <Link to={`account/login`}>Login</Link>
+                <Link to={`/account/login`}>Login</Link>
             </>
         )
 
