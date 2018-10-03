@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
 import GuestLayout from '../../components/account/GuestLayout'
+import { Formik, ErrorMessage } from 'formik';
+import { parseErrors } from '../../helpers/formErrors'
 import PropTypes from 'prop-types';
 
 const CUSTOMER_RESET = gql`
@@ -18,65 +20,60 @@ mutation customerRecover($email: String!) {
 `
 
 class ForgotPassword extends React.Component {
-    state = {
-        email: '',
-    }
-
-    handleInputChange = e => {
-        e.preventDefault()
-
-        const { name, value } = e.target
-
-        this.setState({
-            name: value,
-        });
-    }
-
     render() {
         const pageContent = (
             <>
                 <h1>Forgot Your Password</h1>
-                <form>
-                    <ul>
-                        <li>
-                            <label htmlFor="forgotEmail">Email</label>
-                            <input id="forgotEmail" type="email" name="email" value={this.state.email} onChange={this.handleInputChange} required="" />
-                        </li>
-                    </ul>
-                    <Mutation
-                        mutation={CUSTOMER_RESET}
-                        onCompleted={data => {
-                            if (data.customerRecover.userErrors.length || data.customerAccessTokenCreate.customerUserErrors.length) {
-                                return
-                            }
-
-                            navigate('/account/login')
-                        }}
-                    >
-                        {(forgotPassword, { loading }) => {
-                            if (loading) return <button disabled="disabled">Submitting Request...</button>
-
-                            return (
-                                <button
-                                    onClick={e => {
-                                        e.preventDefault()
-
-                                        if (!this.state.email) {
+                <Mutation mutation={CUSTOMER_RESET}>
+                    {(forgotPassword, { loading }) => {
+                        return (
+                            <Formik
+                                initialValues={{
+                                    form: '',
+                                    email: '',
+                                }}
+                                onSubmit={
+                                    (values, actions) => {
+                                        if (!values.email) {
                                             return
                                         }
 
                                         forgotPassword({
                                             variables: {
-                                                "email": this.state.email,
+                                                "email": values.email,
+                                            }
+                                        }).then((res) => {
+                                            if (!res.data.customerRecover.userErrors.length) {
+                                                navigate('/account/login')
+                                            } else {
+                                                const errors = parseErrors(res.data.customerRecover.userErrors)
+                                                actions.setErrors(errors)
                                             }
                                         })
-                                    }}
-                                >Reset Password</button>
-                            )
-                        }}
-                    </Mutation>
-                </form>
-                <Link to={`account/login`}>Log In</Link>
+                                    }
+                                }
+                                render = {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <ErrorMessage name="form" />
+                                        <ul>
+                                            <li>
+                                                <label htmlFor="forgotEmail">Email</label>
+                                                <input id="forgotEmail" type="email" name="email" value={values.email} onChange={handleChange} required="" />
+                                                <ErrorMessage name="email" />
+                                            </li>
+                                        </ul>
+                                        {
+                                            (loading)
+                                                ? <button disabled="disabled">Requesting Reset...</button>
+                                                : <button>Reset Password</button>
+                                        }
+                                    </form>
+                                )}
+                            />
+                        )
+                    }}
+                </Mutation>
+                <Link to={`/account/login`}>Log In</Link>
             </>
         )
 
