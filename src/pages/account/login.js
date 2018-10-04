@@ -2,11 +2,12 @@ import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
-import ContextConsumer from '../../layouts/context'
-import GuestLayout from '../../components/account/GuestLayout'
 import { Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
+import ContextConsumer from '../../layouts/context'
+import GuestLayout from '../../components/account/GuestLayout'
+import PasswordInput from '../../components/form/PasswordInput'
 
 const CUSTOMER_LOGIN = gql`
 mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
@@ -101,7 +102,7 @@ class Login extends React.Component {
                                                     </li>
                                                     <li>
                                                         <label htmlFor="loginPassword">Password</label>
-                                                        <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
+                                                        <PasswordInput id="loginPassword" name="password" value={values.password} onChange={handleChange} required="" />
                                                         <ErrorMessage component="div" name="password" />
                                                     </li>
                                                 </ul>

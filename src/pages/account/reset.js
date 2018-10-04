@@ -2,10 +2,11 @@ import React from 'react'
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo'
 import { Link, navigate } from 'gatsby'
-import ContextConsumer from '../../layouts/context'
-import GuestLayout from '../../components/account/GuestLayout'
 import { Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import ContextConsumer from '../../layouts/context'
+import GuestLayout from '../../components/account/GuestLayout'
+import PasswordInput from '../../components/form/PasswordInput'
 import { parseErrors } from '../../helpers/formErrors'
 
 const CUSTOMER_RESET = gql`
@@ -37,7 +38,7 @@ const FormSchema = Yup.object().shape({
 class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
-        this.firstInput = React.createRef();
+        this.firstInput = React.createRef()
     }
 
     handleFirstInputFocus() {
@@ -116,12 +117,12 @@ class ResetPassword extends React.Component {
                                                 <ul>
                                                     <li>
                                                         <label htmlFor="forgotPass">New Password</label>
-                                                        <input id="forgotPass" type="password" name="password" value={values.password} onChange={handleChange} required="" ref={this.firstInput} />
+                                                        <PasswordInput id="forgotPass" name="password" value={values.password} onChange={handleChange} required="" ref={this.firstInput} />
                                                         <ErrorMessage component="div" name="password" />
                                                     </li>
                                                     <li>
                                                         <label htmlFor="forgotPassVerify">Verify New Password</label>
-                                                        <input id="forgotPassVerify" type="password" name="passwordVerification" value={values.passwordVerification} onChange={handleChange} required="" />
+                                                        <PasswordInput id="forgotPassVerify" name="passwordVerification" value={values.passwordVerification} onChange={handleChange} required="" />
                                                         <ErrorMessage component="div" name="passwordVerification" />
                                                     </li>
                                                 </ul>

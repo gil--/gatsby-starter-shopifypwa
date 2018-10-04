@@ -6,6 +6,7 @@ import GuestLayout from '../../components/account/GuestLayout'
 import { Formik, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { parseErrors } from '../../helpers/formErrors'
+import PasswordInput from '../../components/form/PasswordInput'
 
 const CUSTOMER_CREATE = gql`
 mutation customerCreate($input: CustomerCreateInput!) {
@@ -111,7 +112,7 @@ class Register extends React.Component {
                                             </li>
                                             <li>
                                                 <label htmlFor="loginPassword">Password</label>
-                                                <input id="loginPassword" type="password" name="password" value={values.password} onChange={handleChange} required="" />
+                                                <PasswordInput id="loginPassword" name="password" value={values.password} onChange={handleChange} required="" />
                                                 <ErrorMessage component="div" name="password" />
                                             </li>
                                         </ul>
