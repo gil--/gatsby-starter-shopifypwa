@@ -18,6 +18,7 @@ const Header = ({ siteTitle }) => (
       }}
     >
       <h1 style={{
+            display: 'flex',
             margin: 0,
             fontSize: '24px',
           }}
@@ -34,28 +35,41 @@ const Header = ({ siteTitle }) => (
         <AuthenticationWrapper>
           {({isAuthenticated}) => {
             return (
-            (!isAuthenticated)
-              ? <>
-                  <Link
-                    to="/account/login"
-                  >
-                    Log In
-                  </Link>
+              <div
+                style={{
+                  marginLeft: 'auto',
+                }}
+              >
+              {!isAuthenticated
+                ? <>
                     <Link
-                      to="/account/register"
+                      to="/account/login"
+                      style={{
+                        marginLeft: 'auto',
+                      }}
                     >
-                      Sign Up
-                  </Link>
-                </>
-              : <>
-                  <Link
-                    to="/account"
-                  >
-                    My Account
-                </Link>
-                  <Logout />
-                </>
-          )}}
+                      Log In
+                    </Link>
+                    &nbsp;
+                      <Link
+                        to="/account/register"
+                      >
+                        Sign Up
+                    </Link>
+                  </>
+                : <>
+                    <Link
+                      to="/account"
+                    >
+                      My Account
+                    </Link>
+                    &nbsp;
+                    <Logout />
+                  </>
+              }
+              </div>
+            )
+          }}
         </AuthenticationWrapper>
       </h1>
     </div>
