@@ -122,6 +122,7 @@ class Login extends React.Component {
                             }}
                         </Mutation>
                         <Link to={`/account/forgotpassword`}>Forgot Password</Link>
+                        <br />
                         <Link to={`/account/register`}>Sign Up</Link>
                     </>
                 }}
