@@ -87,7 +87,7 @@ class Register extends React.Component {
                                                 // TODO: Push new Toaster Notification SUCCESS Registration
                                                 navigate(`/account/login`)
                                             } else {
-                                                const errors = parseErrors(res.data.customerRecover.userErrors)
+                                                const errors = parseErrors(res.data.customerCreate.customerUserErrors)
                                                 actions.setErrors(errors)
                                             }
                                         })
