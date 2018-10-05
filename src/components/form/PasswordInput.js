@@ -29,9 +29,8 @@ class PasswordInput extends React.Component {
 }
 
 PasswordInput.propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object,
     onChange: PropTypes.func.isRequired,
-    value: PropTypes.func.isRequired,
 }
 
 export default PasswordInput
