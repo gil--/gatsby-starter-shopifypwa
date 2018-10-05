@@ -28,7 +28,19 @@ Should strive to offer the same features as a normal Shopify theme such as easy 
 
 Copy .env.sample to .env.development and change the items to match your store. Make sure to add all .env keys and values in Netlify
 
-### Password Reset
+### Emails
+
+#### Customer Active
+
+When sending a customer an active email (invite email), the template utilizes a url pattern that does not currently work with Shopify PWA. To simplify setup, change the following items in the *Customer account invite* email notification template (**Settings > Notifications > Customer Account > Customer account invite** or https://YOUR_STORE_NAME.myshopify.com/admin/email_templates/customer_account_activate/edit):
+
+```diff
+-<td class="button__cell"><a href="{{ customer.account_activation_url }}" class="button__text">Activate your account</a></td>
++{% assign url_parts = customer.account_activation_url  | split: '/' %}
++<td class="button__cell"><a href="{{shop.url}}/account/activate?id={{url_parts[5]}}&token={{url_parts[6]}}" class="button__text">Activate your account</a></td>
+```
+
+#### Password Reset
 
 Shopify Password Resets urls do not currently work with the Storefront API and are also presented in a sturcture that requires custom Server-Side Routing. To simplify setup, change the following items in the *Customer account password reset* email notification template (**Settings > Notifications > Customer Account > Customer account password reset** or https://YOUR_STORE_NAME.myshopify.com/admin/email_templates/customer_account_reset/edit):
 
