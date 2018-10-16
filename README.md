@@ -1,5 +1,7 @@
 # gatsby-starter-shopifypwa
 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+
 ## Shopify PWA powered by Gatsby
 
 This will be a POC Shopify PWA using the Storefront API & GatsbyJS.
