@@ -11,7 +11,7 @@ class Collection extends React.Component {
         return (
             <>
                 <h1>{title}</h1>
-                {image && <img src={image.originalSrc} alt={image.altText} />}
+                {image && <img src={image.originalSrc} alt={image.altText || ''} />}
                 <div>{description}</div>
                 <ProductList products={products} />
             </>
