@@ -4,28 +4,17 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import ContextConsumer from '../../layouts/context'
 import CartTable from './CartTable'
+import { ReturnFieldsCheckout } from '../../helpers/gqlFragments'
 
 const CART_ITEMS = gql`
     query checkoutQuery($id: ID!) {
         node(id: $id) {
             ... on Checkout {
-                id
-                webUrl
-                lineItems(first: 250) {
-                    edges {
-                        node {
-                            id
-                            title
-                            quantity
-                            variant {
-                                sku
-                            }
-                        }
-                    }
-                }
+                ...ReturnFieldsCheckout
             }
         }
     }
+    ${ReturnFieldsCheckout}
 `
 
 const emptyCart = (<>

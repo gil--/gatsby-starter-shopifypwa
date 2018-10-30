@@ -2,6 +2,7 @@ import React from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import ContextConsumer from '../layouts/context'
+import { ReturnFieldsCheckout } from '../helpers/gqlFragments'
 
 const ADD_TO_CART = gql`
     mutation AddToCart ($input: CheckoutCreateInput!) {
@@ -11,50 +12,26 @@ const ADD_TO_CART = gql`
                 field
             }
             checkout {
-                id
-                webUrl
-                lineItems(first: 250) {
-                    edges {
-                        node {
-                            id
-                            title
-                            quantity
-                            variant {
-                                sku
-                            }
-                        }
-                    }
-                }
+                ...ReturnFieldsCheckout
             }
         }
     }
+    ${ReturnFieldsCheckout}
 `
 
 const ADD_TO_EXISTING_CART = gql`
-mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
-    checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
-        userErrors {
-            field
-            message
-        }
-        checkout {
-            id
-            webUrl
-            lineItems(first: 250) {
-                edges {
-                    node {
-                        id
-                        title
-                        quantity
-                        variant {
-                            sku
-                        }
-                    }
-                }
+    mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
+        checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
+            userErrors {
+                field
+                message
+            }
+            checkout {
+                ...ReturnFieldsCheckout
             }
         }
     }
-}
+    ${ReturnFieldsCheckout}
 `
 
 class AddToCart extends React.Component {

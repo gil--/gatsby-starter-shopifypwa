@@ -2,32 +2,21 @@ import React from 'react';
 import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import ContextConsumer from '../../layouts/context'
+import { ReturnFieldsCheckout } from '../../helpers/gqlFragments'
 
 const REMOVE_LINE_ITEM = gql`
-mutation checkoutLineItemsRemove($checkoutId: ID!, $lineItemIds: [ID!]!) {
-    checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
-        userErrors {
-            field
-            message
-        }
-        checkout {
-            id
-            webUrl
-            lineItems(first: 250) {
-                edges {
-                    node {
-                        id
-                        title
-                        quantity
-                        variant {
-                            sku
-                        }
-                    }
-                }
+    mutation checkoutLineItemsRemove($checkoutId: ID!, $lineItemIds: [ID!]!) {
+        checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
+            userErrors {
+                field
+                message
+            }
+            checkout {
+                ...ReturnFieldsCheckout
             }
         }
     }
-}
+    ${ReturnFieldsCheckout}
 `
 
 class RemoveProduct extends React.Component {
