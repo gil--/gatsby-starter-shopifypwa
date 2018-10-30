@@ -19,7 +19,7 @@ mutation customerAccessTokenDelete($customerAccessToken: String!) {
 
 const Logout = () => (
     <ContextConsumer>
-        {({ data, set }) => {
+        {({ set, store }) => {
             return (
             <Mutation
                 mutation={CUSTOMER_LOGOUT}
@@ -43,7 +43,7 @@ const Logout = () => (
                             // delete the Shopify customer token
                             customerLogout({
                                 variables: {
-                                    "customerAccessToken": data.customerAccessToken.accessToken,
+                                    "customerAccessToken": store.customerAccessToken.accessToken,
                                 }
                             })
                         }}

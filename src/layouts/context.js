@@ -12,10 +12,12 @@ class ContextProviderComponent extends React.Component {
 
         this.setData = this.setData.bind(this)
         this.state = {
-            data: {
+            store: {
                 // set your initial data shape here
+                cartCount: this.getLocalStorageFromKey('cartCount') || 0,
                 customerAccessToken: this.getLocalStorageFromKey('customerAccessToken'),
-                showMenu: false,
+                isCartOpen: false,
+                checkout: this.getLocalStorageFromKey('checkout')
             },
             ...defaultContextValue,
             set: this.setData,
@@ -33,8 +35,8 @@ class ContextProviderComponent extends React.Component {
 
     setData(newData, shouldStoreLocal = true) {
         this.setState(state => ({
-            data: {
-                ...state.data,
+            store: {
+                ...state.store,
                 ...newData,
             },
         }))

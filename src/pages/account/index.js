@@ -45,11 +45,11 @@ class Account extends React.Component {
             <AccountLayout>
                 <h1>Account Dashboard</h1>
                 <ContextConsumer>
-                    {({ data }) => {
+                    {({ store }) => {
                         return (
                         <Query
                             query={CUSTOMER_INFO}
-                            variables={{ customerAccessToken: data.customerAccessToken.accessToken }}
+                            variables={{ customerAccessToken: store.customerAccessToken.accessToken }}
                         >
                             {({ loading, error, data }) => {
                                 if (error) return <div>Error :(</div>
