@@ -13,11 +13,15 @@ const ADD_TO_CART = gql`
             checkout {
                 id
                 webUrl
-                lineItems(first: 5) {
+                lineItems(first: 250) {
                     edges {
                         node {
+                            id
                             title
                             quantity
+                            variant {
+                                sku
+                            }
                         }
                     }
                 }
@@ -59,10 +63,9 @@ class AddToCart extends React.Component {
             <ContextConsumer>
                 {({ set, store }) => {
                     return <Mutation
-                        mutation={store.checkout.id ? ADD_TO_EXISTING_CART : ADD_TO_CART}
+                        mutation={(store.checkout && store.checkout.id) ? ADD_TO_EXISTING_CART : ADD_TO_CART}
                         onError={this.error}
                         onCompleted={res => {
-                            console.log(res)
                             let { checkout } = res.checkoutLineItemsAdd || res.checkoutCreate
                             if (checkout.webUrl !== undefined) {
                                 set({
@@ -87,7 +90,7 @@ class AddToCart extends React.Component {
                                             ]
                                         }
 
-                                        if (store.checkout.id) {
+                                        if (store.checkout && store.checkout.id) {
                                             mutationInput.checkoutId = store.checkout.id
 
                                             addToCart({
