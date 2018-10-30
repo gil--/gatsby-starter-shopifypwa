@@ -3,6 +3,10 @@ import RemoveProduct from './RemoveProduct'
 
 class CartTable extends React.Component {
     render() {
+        if (!this.props.products) {
+            return <p>Your cart is currently empty.</p>
+        }
+
         let productList = this.props.products.edges.map(({ node }) => (
             <tr key={node.id.toString()}>
                 <td>
