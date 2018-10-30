@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import ContextConsumer from '../../layouts/context'
-import CartTable from './CartTable'
+import CartTable from '../../components/checkout/CartTable'
 import { ReturnFieldsCheckout } from '../../helpers/gqlFragments'
 
 const CART_ITEMS = gql`
