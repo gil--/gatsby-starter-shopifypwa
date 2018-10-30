@@ -36,11 +36,15 @@ mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId
         checkout {
             id
             webUrl
-            lineItems(first: 5) {
+            lineItems(first: 250) {
                 edges {
                     node {
+                        id
                         title
                         quantity
+                        variant {
+                            sku
+                        }
                     }
                 }
             }
