@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import AuthenticationWrapper from './account/AuthenticationWrapper'
 import Logout from './account/logout'
-import CartLink from './account/cartlink'
+import CartLink from './account/CartLink'
 
 const Header = ({ siteTitle }) => (
   <div
