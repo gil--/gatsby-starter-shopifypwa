@@ -22,6 +22,16 @@ const emptyCart = (<>
     <Link to={`/`}>Continue Shopping</Link>
 </>)
 
+const checkoutUrl = (storeProvider) => {
+    let url = storeProvider.checkout.webUrl
+
+    if (storeProvider.customerAccessToken) {
+        url += `?customer_access_token=${storeProvider.customerAccessToken.accessToken}`
+    }
+
+    return url;
+}
+
 const Cart = () => (
     <>
         <h1>Your Cart</h1>
@@ -41,7 +51,7 @@ const Cart = () => (
                         />
                         <Link to={`/`}>Continue Shopping</Link>
                         <br/>
-                        <a href={`${store.checkout.webUrl}?customer_access_token=${store.customerAccessToken.accessToken}`}>Go to Checkout</a>
+                        <a href={checkoutUrl(store)}>Go to Checkout</a>
                     </>
                 )
             }}
