@@ -31,6 +31,9 @@ const Logout = () => (
                         cart: '',
                     })
 
+                    // TODO: if active checkout, dissaociate customer
+
+
                     navigate('/account/login')
                 }}
             >
