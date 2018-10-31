@@ -4,6 +4,12 @@ export const ReturnFieldsCheckout = gql`
 fragment ReturnFieldsCheckout on Checkout {
     id
     webUrl
+    totalTax
+    subtotalPrice
+    totalPrice
+    note
+    currencyCode
+    taxesIncluded
     lineItems(first: 250) {
         edges {
             node {
