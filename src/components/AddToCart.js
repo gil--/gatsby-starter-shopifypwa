@@ -1,6 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
+import { Mutation, compose } from 'react-apollo'
 import ContextConsumer from '../layouts/context'
 import { ReturnFieldsCheckout } from '../helpers/gqlFragments'
 
@@ -34,24 +34,46 @@ const ADD_TO_EXISTING_CART = gql`
     ${ReturnFieldsCheckout}
 `
 
+const ASSOCIATE_CUSTOMER_CHECKOUT = gql`
+    mutation checkoutCustomerAssociateV2($checkoutId: ID!, $customerAccessToken: String!) {
+        checkoutCustomerAssociateV2(checkoutId: $checkoutId, customerAccessToken: $customerAccessToken) {
+            userErrors {
+                field
+                message
+            }
+            checkout {
+                ...ReturnFieldsCheckout
+            }
+            customer {
+                id
+            }
+        }
+    }
+    ${ReturnFieldsCheckout}
+`
+
 class AddToCart extends React.Component {
     render() {
         return (
             <ContextConsumer>
                 {({ set, store }) => {
-                    return <Mutation
-                        mutation={(store.checkout && store.checkout.id) ? ADD_TO_EXISTING_CART : ADD_TO_CART}
-                        onError={this.error}
-                        onCompleted={res => {
-                            let { checkout } = res.checkoutLineItemsAdd || res.checkoutCreate
-                            if (checkout.webUrl !== undefined) {
-                                set({
-                                    checkout: checkout,
-                                    cartCount: store.cartCount + parseInt(this.props.quantity),
-                                })
+                    return (
+                    <Mutation
+                        mutation={ASSOCIATE_CUSTOMER_CHECKOUT}
+                    >
+                        {(associateCustomer) => <Mutation
+                            mutation={(store.checkout && store.checkout.id) ? ADD_TO_EXISTING_CART : ADD_TO_CART}
+                            onError={this.error}
+                            onCompleted={res => {
+                                let { checkout } = res.checkoutLineItemsAdd || res.checkoutCreate
+                                if (checkout.webUrl !== undefined) {
+                                    set({
+                                        checkout: checkout,
+                                        cartCount: store.cartCount + parseInt(this.props.quantity),
+                                    })
+                                }
                             }
-                        }
-                    }>
+                        }>
                         {(addToCart, {loading}) => {
                             if (loading) return <button type="button" disabled="disabled">Adding to Cart</button>
 
@@ -72,6 +94,16 @@ class AddToCart extends React.Component {
 
                                             addToCart({
                                                 variables: mutationInput
+                                            }).then(res => {
+                                                if (!res.data.checkoutLineItemsAdd.userErrors.length
+                                                    && store.customerAccessToken) {
+                                                    associateCustomer({
+                                                        variables: {
+                                                            checkoutId: res.data.checkoutLineItemsAdd.checkout.id,
+                                                            customerAccessToken: store.customerAccessToken.accessToken,
+                                                        }
+                                                    })
+                                                }
                                             })
 
                                         } else {
@@ -92,6 +124,9 @@ class AddToCart extends React.Component {
                         }
                     }
                     </Mutation>
+                    }
+                    </Mutation>
+                    )
                 }}
             </ContextConsumer>
         )
