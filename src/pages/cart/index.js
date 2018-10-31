@@ -26,15 +26,22 @@ const Cart = () => (
     <>
         <h1>Your Cart</h1>
         <ContextConsumer>
-            {({ set, store }) => {
+            {({ store }) => {
                 if (!store.checkout || store.cartCount === 0) {
                     return emptyCart
                 }
 
                 return (
                     <>
-                        <CartTable products={store.checkout.lineItems} />
-                        <a href={store.checkout.webUrl}>Go to Checkout</a>
+                        <CartTable
+                            products={store.checkout.lineItems}
+                            subtotalPrice={store.checkout.subtotalPrice}
+                            totalTax={store.checkout.totalTax}
+                            totalPrice={store.checkout.totalPrice}
+                        />
+                        <Link to={`/`}>Continue Shopping</Link>
+                        <br/>
+                        <a href={`${store.checkout.webUrl}?customer_access_token=${store.customerAccessToken.accessToken}`}>Go to Checkout</a>
                     </>
                 )
             }}
