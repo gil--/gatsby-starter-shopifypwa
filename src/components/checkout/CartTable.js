@@ -11,10 +11,20 @@ class CartTable extends React.Component {
             <tr key={node.id.toString()}>
                 <td>
                     <h3>{node.title}</h3>
-                    <p>SKU: {node.variant.sku}</p>
+                    <ul>
+                        <li>SKU: {node.variant.sku}</li>
+                        {
+                            node.variant.selectedOptions.map(option => {
+                                return <li>{option.name}: {option.value}</li>;
+                            })
+                        }
+                    </ul>
                 </td>
                 <td>
                     <p>Qty: <input type="number" value={node.quantity} /></p>
+                </td>
+                <td>
+                    <p>{node.variant.price}</p>
                 </td>
                 <td>
                     <RemoveProduct id={node.id} />
@@ -26,14 +36,28 @@ class CartTable extends React.Component {
             <>
                 <table style={{
                     display: 'flex',
-                    listStyle: 'none',
-                    marginLeft: '0',
                     flexWrap: 'wrap',
                 }}
                 >
-                <tbody>
-                    {productList}
-                </tbody>
+                    <tbody style={{
+                        width: '100%'
+                    }}>
+                        {productList}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td>{this.props.subtotalPrice ? this.props.subtotalPrice : '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td>Taxes</td>
+                            <td>{this.props.totalTax ? this.props.totalTax : '0.00'}</td>
+                        </tr>
+                        <tr>
+                            <td>Grand Total</td>
+                            <td>{this.props.totalPrice ? this.props.totalPrice : '0.00'}</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </>
         )
