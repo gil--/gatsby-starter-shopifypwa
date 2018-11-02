@@ -22,12 +22,9 @@ const emptyCart = (<>
     <Link to={`/`}>Continue Shopping</Link>
 </>)
 
+// TODO: Abstract into helper function.Will be used for sharing carts
 const checkoutUrl = (storeProvider) => {
     let url = storeProvider.checkout.webUrl
-
-    if (storeProvider.customerAccessToken) {
-        url += `?customer_access_token=${storeProvider.customerAccessToken.accessToken}`
-    }
 
     return url;
 }
