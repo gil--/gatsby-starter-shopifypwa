@@ -6,8 +6,8 @@ class AuthenticationWrapper extends React.Component {
     render() {
         return (
             <ContextConsumer>
-                {({ data }) => {
-                    const isAuthenticated = data.customerAccessToken && data.customerAccessToken.expiresAt && data.customerAccessToken.expiresAt > new Date().toISOString() ? true : false
+                {({ store }) => {
+                    const isAuthenticated = store.customerAccessToken && store.customerAccessToken.expiresAt && store.customerAccessToken.expiresAt > new Date().toISOString() ? true : false
                     return (this.props.children({
                             isAuthenticated,
                         }))

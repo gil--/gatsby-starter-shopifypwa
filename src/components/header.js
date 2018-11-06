@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import AuthenticationWrapper from './account/AuthenticationWrapper'
 import Logout from './account/logout'
+import CartLink from './account/CartLink'
 
 const Header = ({ siteTitle }) => (
   <div
@@ -67,6 +68,7 @@ const Header = ({ siteTitle }) => (
                     <Logout />
                   </>
               }
+                <CartLink />
               </div>
             )
           }}
