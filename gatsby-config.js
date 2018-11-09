@@ -7,6 +7,7 @@ module.exports = {
     title: 'Shopify PWA',
   },
   plugins: [
+    `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-layout`,
     `gatsby-plugin-react-helmet`,
     {
