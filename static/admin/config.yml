@@ -1,0 +1,51 @@
+backend:
+  name: git-gateway
+  branch: master
+
+logo_url: https://image.ibb.co/jkK9qf/strawberry-logo.png
+media_folder: static/assets
+public_folder: assets
+
+collections:
+  - name: settings
+    label: Settings
+    editor:
+      preview: false
+    files:
+      - file: "src/settings/global.json"
+        label: "Global"
+        name: "global"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-global"}
+          - {label: "Store Name", name: "storeName", widget: "string"}
+          - {label: "Enable Demo Mode", name: "isDemoMode", widget: "boolean", hint: "Place a store demo notice at the top of every page."}
+      - file: "src/settings/customers.json"
+        label: "Customers"
+        name: "customers"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-customer"}
+          - {label: "Enable Registration", name: "canRegister", widget: "boolean", default: true, hint: "Allows customers to register on your store."}
+      - file: "src/settings/collections.json"
+        label: "Collections"
+        name: "collections"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-collections"}
+      - file: "src/settings/products.json"
+        label: "Products"
+        name: "pdp"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-product"}
+          - {label: "Enable Add to Cart", name: "canAdd", widget: "boolean", hint: "Enable Adding Product to Cart"}
+      - file: "src/settings/checkout.json"
+        label: "Checkout"
+        name: "checkout"
+        fields:
+          - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-product"}
+          - {label: "Allow Promo Codes", name: "canAdd", widget: "boolean", hint: "Enable Adding Product to Cart"}
+          - label: "Minicart Behavior"
+            name: "cartLinkType"
+            widget: "select"
+            options:
+              - { label: "Direct Link to Cart", value: "link" }
+              - { label: "Dropdown", value: "dropdown" }
+              - { label: "Minicart Flyout", value: "minicart" }
