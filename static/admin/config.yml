@@ -2,7 +2,10 @@ backend:
   name: git-gateway
   branch: master
 
+publish_mode: editorial_workflow
+
 logo_url: https://image.ibb.co/jkK9qf/strawberry-logo.png
+
 media_folder: static/assets
 public_folder: assets
 
