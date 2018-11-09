@@ -7,7 +7,6 @@ module.exports = {
     title: 'Shopify PWA',
   },
   plugins: [
-    `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-layout`,
     `gatsby-plugin-react-helmet`,
     {
@@ -28,6 +27,7 @@ module.exports = {
         },
       },
     },
+    `gatsby-plugin-netlify-cms`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -41,5 +41,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-offline`,
+    `gatsby-plugin-netlify`,
   ],
 }
