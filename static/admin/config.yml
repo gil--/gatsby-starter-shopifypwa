@@ -1,5 +1,6 @@
 backend:
-  name: test-repo
+  name: git-gateway
+  branch: master
 
 logo_url: https://image.ibb.co/jkK9qf/strawberry-logo.png
 media_folder: static/assets
