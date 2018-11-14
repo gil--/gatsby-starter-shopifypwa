@@ -38,7 +38,9 @@ collections:
         name: "pdp"
         fields:
           - {label: "Template Key", name: "templateKey", widget: "hidden", default: "settings-product"}
-          - {label: "Enable Add to Cart", name: "canAdd", widget: "boolean", hint: "Enable Adding Product to Cart"}
+          - {label: "Enable Add to Cart", name: "canAdd", widget: "boolean"}
+          - {label: "Enable Breadcrumbs on PDP", name: "showBreadcrumbs", widget: "boolean"}
+          - {label: "Show Social Sharing Options", name: "showSocialSharing", widget: "boolean"}
       - file: "src/settings/checkout.json"
         label: "Checkout"
         name: "checkout"
