@@ -81,80 +81,80 @@ class AddToCart extends React.Component {
                     }
 
                     return (
-            <ContextConsumer>
-                {({ set, store }) => {
-                    return (
-                    <Mutation
-                        mutation={ASSOCIATE_CUSTOMER_CHECKOUT}
-                    >
-                        {(associateCustomer) => <Mutation
-                            mutation={(store.checkout && store.checkout.id) ? ADD_TO_EXISTING_CART : ADD_TO_CART}
-                            onError={this.error}
-                            onCompleted={res => {
-                                let { checkout } = res.checkoutLineItemsAdd || res.checkoutCreate
-                                if (checkout.webUrl !== undefined) {
-                                    set({
-                                        checkout: checkout,
-                                        cartCount: store.cartCount + parseInt(this.props.quantity),
-                                    })
-                                }
-                            }
-                        }>
-                        {(addToCart, {loading}) => {
-                            if (loading) return <button type="button" disabled="disabled">Adding to Cart</button>
-
-                            return (
-                                <button
-                                    type="button"
-                                    onClick={e => {
-                                        e.preventDefault()
-
-                                        let mutationInput = {
-                                            lineItems: [
-                                                { quantity: parseInt(this.props.quantity), variantId: this.props.variantId },
-                                            ]
+                        <ContextConsumer>
+                            {({ set, store }) => {
+                                return (
+                                <Mutation
+                                    mutation={ASSOCIATE_CUSTOMER_CHECKOUT}
+                                >
+                                    {(associateCustomer) => <Mutation
+                                        mutation={(store.checkout && store.checkout.id) ? ADD_TO_EXISTING_CART : ADD_TO_CART}
+                                        onError={this.error}
+                                        onCompleted={res => {
+                                            let { checkout } = res.checkoutLineItemsAdd || res.checkoutCreate
+                                            if (checkout.webUrl !== undefined) {
+                                                set({
+                                                    checkout: checkout,
+                                                    cartCount: store.cartCount + parseInt(this.props.quantity),
+                                                })
+                                            }
                                         }
+                                    }>
+                                    {(addToCart, {loading}) => {
+                                        if (loading) return <button type="button" disabled="disabled">Adding to Cart</button>
 
-                                        if (store.checkout && store.checkout.id) {
-                                            mutationInput.checkoutId = store.checkout.id
+                                        return (
+                                            <button
+                                                type="button"
+                                                onClick={e => {
+                                                    e.preventDefault()
 
-                                            addToCart({
-                                                variables: mutationInput
-                                            }).then(res => {
-                                                if (!res.data.checkoutLineItemsAdd.userErrors.length
-                                                    && store.customerAccessToken) {
-                                                    associateCustomer({
-                                                        variables: {
-                                                            checkoutId: res.data.checkoutLineItemsAdd.checkout.id,
-                                                            customerAccessToken: store.customerAccessToken.accessToken,
-                                                        }
-                                                    })
-                                                }
-                                            })
-
-                                        } else {
-                                            addToCart({
-                                                variables: {
-                                                    input: {
+                                                    let mutationInput = {
                                                         lineItems: [
                                                             { quantity: parseInt(this.props.quantity), variantId: this.props.variantId },
                                                         ]
                                                     }
-                                                }
-                                            })
-                                        }
 
-                                    }}
-                                >Add to Cart</button>
-                            )
-                        }
-                    }
-                    </Mutation>
-                    }
-                    </Mutation>
-                    )
-                }}
-            </ContextConsumer>
+                                                    if (store.checkout && store.checkout.id) {
+                                                        mutationInput.checkoutId = store.checkout.id
+
+                                                        addToCart({
+                                                            variables: mutationInput
+                                                        }).then(res => {
+                                                            if (!res.data.checkoutLineItemsAdd.userErrors.length
+                                                                && store.customerAccessToken) {
+                                                                associateCustomer({
+                                                                    variables: {
+                                                                        checkoutId: res.data.checkoutLineItemsAdd.checkout.id,
+                                                                        customerAccessToken: store.customerAccessToken.accessToken,
+                                                                    }
+                                                                })
+                                                            }
+                                                        })
+
+                                                    } else {
+                                                        addToCart({
+                                                            variables: {
+                                                                input: {
+                                                                    lineItems: [
+                                                                        { quantity: parseInt(this.props.quantity), variantId: this.props.variantId },
+                                                                    ]
+                                                                }
+                                                            }
+                                                        })
+                                                    }
+
+                                                }}
+                                            >Add to Cart</button>
+                                        )
+                                    }
+                                }
+                                </Mutation>
+                                }
+                                </Mutation>
+                                )
+                            }}
+                        </ContextConsumer>
                 )}}
             />
         )
