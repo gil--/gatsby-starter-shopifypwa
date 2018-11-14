@@ -16,6 +16,13 @@ module.exports = {
         accessToken: process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
       },
     },
+    `gatsby-transformer-json`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `./src/settings/`,
+      },
+    },
     {
       resolve: `gatsby-source-graphql`,
       options: {
