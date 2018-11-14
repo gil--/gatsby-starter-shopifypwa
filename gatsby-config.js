@@ -16,10 +16,16 @@ module.exports = {
         accessToken: process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
       },
     },
-    `gatsby-transformer-json`,
+    {
+      resolve: `gatsby-transformer-json`,
+      options: {
+        typeName: `json`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: `settings`,
         path: `./src/settings/`,
       },
     },
