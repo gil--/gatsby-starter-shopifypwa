@@ -3,6 +3,8 @@ import gql from 'graphql-tag'
 import { Mutation, compose } from 'react-apollo'
 import ContextConsumer from '../layouts/context'
 import { ReturnFieldsCheckout } from '../helpers/gqlFragments'
+import { getSetting } from '../helpers/settings';
+import { StaticQuery, graphql } from 'gatsby';
 
 const ADD_TO_CART = gql`
     mutation AddToCart ($input: CheckoutCreateInput!) {
@@ -55,6 +57,30 @@ const ASSOCIATE_CUSTOMER_CHECKOUT = gql`
 class AddToCart extends React.Component {
     render() {
         return (
+            <StaticQuery
+                query={graphql`
+                    query settings {
+                        allFile (filter: {
+                            name: { eq: "products" }
+                            sourceInstanceName: { eq : "settings" }
+                        }) {
+                            edges {
+                                node {
+                                    childJson {
+                                        canAdd
+                                    }
+                                }
+                            }
+                        }
+                    }
+                `}
+                render={data => {
+                    const canAddtoCart = getSetting(data, 'canAdd');
+                    if (!canAddtoCart) {
+                        return null;
+                    }
+
+                    return (
             <ContextConsumer>
                 {({ set, store }) => {
                     return (
@@ -129,6 +155,8 @@ class AddToCart extends React.Component {
                     )
                 }}
             </ContextConsumer>
+                )}}
+            />
         )
     }
 }
