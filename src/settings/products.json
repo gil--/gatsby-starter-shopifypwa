@@ -1,3 +1,5 @@
 {
-  "canAdd": true
+  "canAdd": true,
+  "showBreadcrumbs": true,
+  "showSocialSharing": true
 }
