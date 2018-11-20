@@ -1,8 +1,10 @@
-# gatsby-starter-shopifypwa
+# Bodega Cloud
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+A Gatsby Shopify starter
 
-## Shopify PWA powered by Gatsby
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+## Bodega Cloud powered by Gatsby, Netlify, & Shopify
 
 This will be a POC Shopify PWA using the Storefront API & GatsbyJS.
 

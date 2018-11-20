@@ -1,6 +1,6 @@
 {
   "name": "gatsby-starter-shopify",
-  "description": "Shopify PWA starter",
+  "description": "Bodega Cloud - A Gatsby Shopify starter",
   "version": "0.0.1",
   "author": "Gil Greenberg <gilgreenberg@gmail.com>",
   "dependencies": {
