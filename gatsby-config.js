@@ -41,6 +41,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-netlify-cms`,
+    `gatsby-plugin-netlify-cache`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
