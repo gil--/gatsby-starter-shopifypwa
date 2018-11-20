@@ -4,7 +4,7 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: 'Shopify PWA',
+    title: 'Bodega Cloud',
   },
   plugins: [
     `gatsby-plugin-layout`,
@@ -45,12 +45,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'Shopify PWA',
-        short_name: 'ShopifyPWA',
+        name: 'Bodega Cloud',
+        short_name: 'Bodega',
         start_url: '/',
         background_color: '#50B83C',
         theme_color: '#50B83C',
-        display: 'standalone',
+        display: 'minimal-ui',
         icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
