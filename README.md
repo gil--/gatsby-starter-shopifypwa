@@ -81,6 +81,10 @@ Setup webhooks with Netlify to auto-deploy after product creation, update, and d
 
 The following are planned features. Many of these are not planned for the initial release.
 
+- ✅ Works Offline (Service Workers)
+- ✅ Registration & Logic
+- ✅ Shopify Product Pages
+- ✅ Shopify Collection Pages
 - [ ] Native-Like Homepage Sections
 - [ ] Page Builder (Easily Build CMS Pages & Category Landing Pages)
 - [ ] Theme Customizer (Colors, Typography, Basic Theme Features On/Off)
