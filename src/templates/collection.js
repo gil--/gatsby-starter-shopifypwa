@@ -6,7 +6,7 @@ class Collection extends React.Component {
     state = { }
 
     render() {
-        const { title, description, image, products } = this.props.data.shopify.shop.collectionByHandle
+        const { title, description, image, products } = this.props.data.shopifyCollection
 
         return (
             <>
@@ -23,39 +23,27 @@ export default Collection
 
 export const query = graphql`
 query ($handle: String!) {
-    shopify {
-        shop {
-            collectionByHandle(handle: $handle) {
-                handle
-                title
-                description
-                image {
-                    originalSrc
-                    altText
+    shopifyCollection(handle: {eq: $handle}) {
+        handle
+        title
+        description
+        image {
+            localFile {
+                base
+            }
+        }
+        products {
+            id
+            handle
+            title
+            priceRange {
+                minVariantPrice {
+                    currencyCode
+                    amount
                 }
-                products(first: 20) {
-                    edges {
-                        node {
-                            id
-                            handle
-                            title
-                            priceRange {
-                                minVariantPrice {
-                                    currencyCode
-                                    amount
-                                }
-                            }
-                            images(first: 2) {
-                                edges {
-                                    node {
-                                        originalSrc
-                                        altText
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            }
+            images {
+                originalSrc
             }
         }
     }

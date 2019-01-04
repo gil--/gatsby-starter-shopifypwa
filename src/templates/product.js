@@ -25,7 +25,7 @@ class Product extends React.Component {
     state = { }
 
     componentDidMount() {
-        this.props.data.shopify.shop.productByHandle.options.forEach((selector) => {
+        this.props.data.shopifyProduct.options.forEach((selector) => {
             this.setState({
                 selectedOptions: { [selector.name]: selector.values[0] }
             });
@@ -34,7 +34,7 @@ class Product extends React.Component {
 
     handleOptionChange = (event) => {
         const target = event.target
-        const variants = this.props.data.shopify.shop.productByHandle.variants.edges;
+        const variants = this.props.data.shopifyProduct.variants.edges;
         let selectedOptions = this.state.selectedOptions;
         selectedOptions[target.name] = target.value;
 
@@ -67,10 +67,10 @@ class Product extends React.Component {
     }
 
     render() {
-        const product = this.props.data.shopify.shop.productByHandle
+        const product = this.props.data.shopifyProduct
 
-        let variant = this.state.selectedVariant || product.variants.edges[0].node
-        let variantImage = this.state.selectedVariantImage || product.images.edges[0].node.src
+        let variant = this.state.selectedVariant || product.variants[0]
+        let variantImage = this.state.selectedVariantImage || product.images[0].originalSrc
         let variantQuantity = this.state.selectedVariantQuantity || 1
 
         const price = new Intl.NumberFormat('en', { style: 'currency', currency: product.priceRange.minVariantPrice.currencyCode }).format(variant.price)
@@ -98,14 +98,14 @@ class Product extends React.Component {
                             width: '50%',
                         }}
                     >
-                        {product.images && product.images.edges.map((image, i) => {
+                        {product.images && product.images.map((image, i) => {
                             // return (
                             //     <Img
                             //         key={i}
                             //         fixed={image.childImageSharp.fixed}
                             //     />
                             // )
-                            return <img key={i} src={image.node.originalSrc} alt={image.node.altText} />
+                            return <img key={i} src={image.originalSrc} alt={image.altText} />
                         })}
                     </div>
                     <div
@@ -150,53 +150,39 @@ class Product extends React.Component {
 export default Product
 
 export const query = graphql`
-query($handle: String!) {
-    shopify {
-        shop {
-            productByHandle(handle: $handle) {
-                title
-                description
-                handle
-                priceRange {
-                    minVariantPrice {
-                        currencyCode
-                        amount
-                    }
+    query($handle: String!) {
+        shopifyProduct(handle: { eq: $handle}) {
+            title
+            description
+            handle
+            priceRange {
+                minVariantPrice {
+                    currencyCode
+                    amount
                 }
-                options {
-                    id
+            }
+            options {
+                id
+                name
+                values
+            }
+            images {
+                originalSrc
+            }
+            variants {
+                id
+                price
+                compareAtPrice
+                sku
+                availableForSale
+                image {
+                    originalSrc
+                }
+                selectedOptions {
                     name
-                    values
-                }
-                images(first: 250) {
-                    edges {
-                        node {
-                            originalSrc
-                            altText
-                        }
-                    }
-                }
-                variants(first: 100) {
-                    edges {
-                        node {
-                            id
-                            price
-                            compareAtPrice
-                            sku
-                            availableForSale
-                            image {
-                                originalSrc
-                                altText
-                            }
-                            selectedOptions {
-                                name
-                                value
-                            }
-                        }
-                    }
+                    value
                 }
             }
         }
     }
-}
 `;

@@ -15,9 +15,9 @@ class ProductBox extends React.Component {
         return (
             <li>
                 <Link to={`/products/${handle}`}>
-                    {images.edges.length &&
-                        <img src={images.edges[0].node.originalSrc}
-                            alt={images.edges[0].node.altText || ''}
+                    {images.length &&
+                        <img src={images[0].originalSrc}
+                            alt={images[0].altText || ''}
                             style={{
                                 maxWidth: '275px',
                             }}

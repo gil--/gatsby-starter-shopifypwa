@@ -3,7 +3,7 @@ import { graphql, Link } from 'gatsby'
 import ProductList from '../components/ProductList'
 class Products extends React.Component {
     render() {
-        const products = this.props.data.shopify.shop.products
+        const products = this.props.data.allShopifyProduct
 
         return (
             <div>
@@ -21,37 +21,24 @@ class Products extends React.Component {
 export default Products
 
 export const query = graphql`
-query productsQuery {
-    shopify {
-        shop {
-            products(first: 20) {
-                edges {
-                    node {
-                        id
-                        handle
-                        title
-                        priceRange {
-                            minVariantPrice {
-                                currencyCode
-                                amount
-                            }
-                        }
-                        images(first: 2) {
-                            edges {
-                                node {
-                                    originalSrc
-                                    altText
-                                }
-                            }
+    query productsQuery {
+        allShopifyProduct {
+            edges {
+                node {
+                    id
+                    handle
+                    title
+                    priceRange {
+                        minVariantPrice {
+                            currencyCode
+                            amount
                         }
                     }
-                }
-                pageInfo {
-                    hasNextPage
-                    hasPreviousPage
+                    images {
+                        originalSrc
+                    }
                 }
             }
         }
     }
-}
 `
