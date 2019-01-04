@@ -15,7 +15,7 @@
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-source-filesystem": "^2.0.8",
-    "gatsby-source-graphql": "^2.0.2",
+    "gatsby-source-shopify2": "^2.0.6",
     "gatsby-transformer-json": "^2.1.5",
     "graphql-tag": "^2.9.2",
     "netlify-cms": "^2.1.3",

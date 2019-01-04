@@ -30,15 +30,12 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-graphql`,
+      resolve: `gatsby-source-shopify2`,
       options: {
-        typeName: 'Shopify',
-        fieldName: 'shopify',
-        url: `https://${process.env.GATSBY_SHOPIFY_SHOP_NAME}.myshopify.com/api/graphql`,
-        headers: {
-          'X-Shopify-Storefront-Access-Token': process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
-        },
-      },
+        shopName: process.env.GATSBY_SHOPIFY_SHOP_NAME,
+        accessToken: process.env.GATSBY_SHOPIFY_ACCESS_TOKEN,
+        verbose: true,
+      }
     },
     `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-netlify-cache`,
