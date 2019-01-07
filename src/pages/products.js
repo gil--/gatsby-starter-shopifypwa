@@ -1,9 +1,9 @@
 import React from 'react'
-import { graphql, Link } from 'gatsby'
+import { graphql } from 'gatsby'
 import ProductList from '../components/ProductList'
 class Products extends React.Component {
     render() {
-        const products = this.props.data.allShopifyProduct
+        const products = this.props.data.allShopifyProduct.edges
 
         return (
             <div>

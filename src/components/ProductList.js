@@ -9,15 +9,21 @@ class ProductList extends React.Component {
             )
         }
 
-        let productList = this.props.products.edges.map(({ node }) =>
-            (<ProductBox key={node.id.toString()} product={node} />)
-        )
+        let productList = this.props.products.map((product, key) => {
+            if (product.edge) {
+                product = product.edge;
+            }
+
+            return (
+                <ProductBox key={product.id && product.id.toString() || key} product={product} />
+            )
+        })
 
         return (
             <>
                 <ul style={{
                         display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(275px, 1fr))',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(275px, 1fr))',
                         gridGap: '10px',
                         listStyle: 'none',
                     }}
