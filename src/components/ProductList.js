@@ -3,6 +3,12 @@ import ProductBox from './ProductBox'
 
 class ProductList extends React.Component {
     render() {
+        if (!this.props.products) {
+            return (
+                <p>No products found.</p>
+            )
+        }
+
         let productList = this.props.products.edges.map(({ node }) =>
             (<ProductBox key={node.id.toString()} product={node} />)
         )
